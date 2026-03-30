@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String
+  email          String    @unique
+  password       String
+  agencyName     String?
+  phone          String?
+  avatarUrl      String?
+  emailVerified  DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  socialAccounts  SocialAccount[]
+  preferences     UserPreference?
+  linesOfBusiness UserLineOfBusiness[]
+  posts           Post[]
+  approvalBatches ApprovalBatch[]
+  scheduleSettings ScheduleSettings?
+}
+
+model SocialAccount {
+  id           String   @id @default(cuid())
+  userId       String
+  platform     Platform
+  accountName  String
+  accountId    String
+  accessToken  String
+  refreshToken String?
+  expiresAt    DateTime?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts Post[]
+
+  @@unique([userId, platform])
+}
+
+model UserPreference {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  tone             Tone     @default(PROFESSIONAL)
+  includeHashtags  Boolean  @default(true)
+  includeEmojis    Boolean  @default(false)
+  includeCtA       Boolean  @default(true)
+  targetAudience   String?
+  brandColors      String?
+  weeklyEmailDay   Int      @default(1) // 1=Monday
+  weeklyEmailTime  String   @default("09:00")
+  autoApprove      Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ScheduleSettings {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  postsPerWeek    Int      @default(5)
+  preferredDays   Int[]    @default([1, 2, 3, 4, 5]) // 0=Sun, 1=Mon...
+  preferredTimes  String[] @default(["09:00", "12:00", "17:00"])
+  useAutoSchedule Boolean  @default(true)
+  timezone        String   @default("America/New_York")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserLineOfBusiness {
+  id        String         @id @default(cuid())
+  userId    String
+  line      LineOfBusiness
+  isActive  Boolean        @default(true)
+  createdAt DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, line])
+}
+
+model Post {
+  id              String      @id @default(cuid())
+  userId          String
+  socialAccountId String?
+  platform        Platform
+  content         String
+  imageUrl        String?
+  videoUrl        String?
+  hashtags        String[]
+  lineOfBusiness  LineOfBusiness?
+  status          PostStatus  @default(DRAFT)
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+  approvalBatchId String?
+  engagementData  Json?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  socialAccount SocialAccount? @relation(fields: [socialAccountId], references: [id])
+  approvalBatch ApprovalBatch? @relation(fields: [approvalBatchId], references: [id])
+}
+
+model ApprovalBatch {
+  id          String      @id @default(cuid())
+  userId      String
+  weekStart   DateTime
+  weekEnd     DateTime
+  status      BatchStatus @default(PENDING)
+  emailSentAt DateTime?
+  reviewedAt  DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts Post[]
+}
+
+model ContentTemplate {
+  id             String         @id @default(cuid())
+  lineOfBusiness LineOfBusiness
+  platform       Platform
+  content        String
+  imageUrl       String?
+  hashtags       String[]
+  tone           Tone
+  engagement     Int            @default(0)
+  isTrending     Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+// Enums
+enum Platform {
+  FACEBOOK
+  INSTAGRAM
+  LINKEDIN
+  TWITTER
+}
+
+enum LineOfBusiness {
+  AUTO
+  HOME
+  LIFE
+  HEALTH
+  COMMERCIAL
+  UMBRELLA
+  FLOOD
+  MOTORCYCLE
+  BOAT
+  RV
+  RENTERS
+  PET
+  TRAVEL
+  DISABILITY
+  LONG_TERM_CARE
+  ANNUITIES
+  MEDICARE
+}
+
+enum Tone {
+  PROFESSIONAL
+  FRIENDLY
+  EDUCATIONAL
+  HUMOROUS
+  URGENT
+  EMPATHETIC
+}
+
+enum PostStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+enum BatchStatus {
+  PENDING
+  EMAIL_SENT
+  REVIEWED
+  PARTIALLY_APPROVED
+  FULLY_APPROVED
+  EXPIRED
+}
