@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { QUESTIONS, type AssessmentAnswer } from '@/lib/chatbot/questions'
+import { QUESTIONS, calculateScore, MAX_SCORE, type AssessmentAnswer } from '@/lib/chatbot/questions'
 import { ProgressBar } from './ProgressBar'
 import { QuestionStep } from './QuestionStep'
 import { ContactStep, type ContactInfo } from './ContactStep'
@@ -43,11 +43,51 @@ interface ProfileData {
   skipped?: boolean
 }
 
-interface ChatBotProps {
-  campaignSource?: string
+// ─── Preview mode mock result ────────────────────────────────────────────────
+// Generates a realistic result from the actual answers the user picked,
+// with no API calls, database writes, or emails.
+function buildPreviewResult(firstName: string, answers: AssessmentAnswer[]): AssessmentResult {
+  const score = calculateScore(answers)
+  const passed = score.passed
+
+  const strengths = passed
+    ? ['Strong sales background and proactive mindset', 'Commission-driven motivation aligns with agent compensation', 'Resilient attitude toward rejection']
+    : ['Willing to pursue licensing', 'Expressed interest in the insurance industry']
+
+  const concerns = passed
+    ? ['Will need to verify license status before first client meeting']
+    : ['Compensation structure may not match current expectations', 'Additional coaching on prospecting may be needed']
+
+  return {
+    passed,
+    percentScore: score.percentScore,
+    rawScore: score.rawScore,
+    maxScore: MAX_SCORE,
+    aiSummary: passed
+      ? `${firstName} shows strong readiness for an insurance sales career. Their responses indicate comfort with performance-based pay, a proactive approach to client development, and the resilience required to succeed in a competitive sales environment.`
+      : `${firstName} shows genuine interest in insurance sales but some responses suggest misalignment with the core requirements of the role — particularly around commission-based compensation and prospecting comfort.`,
+    aiStrengths: strengths,
+    aiConcerns: concerns,
+    aiRecommendation: passed
+      ? 'Strong candidate — recommend scheduling a phone screen within 48 hours.'
+      : 'Below threshold — review profile manually before deciding on next steps.',
+    nearestJob: {
+      title: 'Insurance Sales Agent',
+      office: 'Dallas Office',
+      city: 'Dallas',
+      state: 'TX',
+      url: 'https://www.comparioninsurance.com/careers',
+      distanceMiles: 12,
+    },
+  }
 }
 
-export function ChatBot({ campaignSource }: ChatBotProps) {
+interface ChatBotProps {
+  campaignSource?: string
+  previewMode?: boolean
+}
+
+export function ChatBot({ campaignSource, previewMode = false }: ChatBotProps) {
   const [step, setStep] = useState<Step>({ type: 'welcome' })
   const [contact, setContact] = useState<ContactInfo | null>(null)
   const [answers, setAnswers] = useState<AssessmentAnswer[]>([])
@@ -86,6 +126,14 @@ export function ChatBot({ campaignSource }: ChatBotProps) {
     setProfile(data)
     setStep({ type: 'submitting' })
 
+    // ── Preview mode: compute locally, no network calls ──────────────────────
+    if (previewMode) {
+      await new Promise((r) => setTimeout(r, 2200)) // simulate thinking delay
+      setStep({ type: 'result', data: buildPreviewResult(contact?.firstName ?? 'there', answers) })
+      return
+    }
+
+    // ── Production mode ───────────────────────────────────────────────────────
     try {
       const body = {
         firstName: contact!.firstName,
@@ -129,6 +177,13 @@ export function ChatBot({ campaignSource }: ChatBotProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col">
+      {/* Preview banner */}
+      {previewMode && (
+        <div className="bg-amber-400 text-amber-900 text-center text-xs font-semibold py-1.5 px-4">
+          PREVIEW MODE — No data is stored, no emails are sent, and the AI evaluation is simulated.
+        </div>
+      )}
+
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">

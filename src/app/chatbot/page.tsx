@@ -15,9 +15,10 @@ export const metadata: Metadata = {
 }
 
 interface ChatbotPageProps {
-  searchParams: { source?: string }
+  searchParams: { source?: string; preview?: string }
 }
 
 export default function ChatbotPage({ searchParams }: ChatbotPageProps) {
-  return <ChatBot campaignSource={searchParams.source} />
+  const isPreview = searchParams.preview === '1' || searchParams.preview === 'true'
+  return <ChatBot campaignSource={searchParams.source} previewMode={isPreview} />
 }
