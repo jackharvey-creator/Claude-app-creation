@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insurance Sales Agent Assessment | Comparion Insurance</title>
+<style>
+:root{--blue:#2563eb;--blue-dark:#1d4ed8;--blue-lt:#dbeafe;--green:#16a34a;--green-lt:#dcfce7;--amber:#d97706;--amber-lt:#fef3c7;--red:#dc2626;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#fff 50%,#eef2ff 100%);min-height:100vh;display:flex;flex-direction:column}
+.banner{background:#fbbf24;color:#78350f;text-align:center;font-size:12px;font-weight:600;padding:7px 16px;letter-spacing:.01em}
+header{background:#fff;border-bottom:1px solid var(--g200);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:20px;height:20px;color:#fff;stroke:#fff;fill:none}
+.logo-name{font-weight:700;font-size:14px;color:var(--g900)}
+.logo-sub{font-size:11px;color:var(--g500)}
+.q-count{font-size:11px;color:var(--g400);background:var(--g100);padding:4px 10px;border-radius:20px;display:none}
+main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px}
+.wrap{width:100%;max-width:480px}
+.prog-wrap{margin-bottom:24px;display:none}
+.prog-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--g500);margin-bottom:6px}
+.prog-track{width:100%;height:8px;background:var(--g200);border-radius:999px;overflow:hidden}
+.prog-fill{height:100%;background:var(--blue);border-radius:999px;transition:width .5s ease}
+.card{background:#fff;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04);padding:32px}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fi .3s ease both}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:48px;height:48px;border:4px solid var(--blue-lt);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+footer-note{display:block;text-align:center;font-size:11px;color:var(--g400);margin-top:16px}
+/* Welcome */
+.welcome-icon{width:64px;height:64px;background:var(--blue-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.welcome-icon svg{width:32px;height:32px;stroke:var(--blue);fill:none}
+h1{font-size:22px;font-weight:700;color:var(--g900);line-height:1.3;text-align:center}
+.desc{font-size:14px;color:var(--g600);line-height:1.6;margin:10px 0 4px;text-align:center}
+.checklist{background:var(--g50);border-radius:12px;padding:16px;margin:16px 0 24px;list-style:none}
+.checklist li{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--g600);padding:4px 0}
+.checklist li::before{content:'✓';color:var(--blue);font-weight:700}
+/* Buttons */
+.btn{display:block;width:100%;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;text-align:center;text-decoration:none}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-dark)}
+.btn-li{background:#0A66C2;color:#fff}.btn-li:hover{background:#004182}
+.btn-skip{background:transparent;color:var(--g400);font-size:13px;padding:12px}.btn-skip:hover{color:var(--g600)}
+.hint{font-size:11px;color:var(--g400);text-align:center;margin-top:10px}
+/* Form */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:13px;font-weight:500;color:var(--g700);margin-bottom:5px}
+.fg input{width:100%;padding:11px 14px;border:2px solid var(--g200);border-radius:10px;font-size:14px;color:var(--g900);outline:none;transition:border-color .15s}
+.fg input:focus{border-color:var(--blue)}
+.fg input.err{border-color:var(--red)}
+.ferr{font-size:11px;color:var(--red);margin-top:4px}
+/* Question */
+.q-tag{display:inline-block;background:var(--blue-lt);color:var(--blue);font-size:11px;font-weight:600;padding:4px 12px;border-radius:999px;margin-bottom:12px}
+.q-text{font-size:18px;font-weight:600;color:var(--g900);line-height:1.4}
+.q-sub{font-size:13px;color:var(--g500);margin-top:6px}
+.options{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:2px solid var(--g200);border-radius:12px;background:#fff;text-align:left;font-size:14px;color:var(--g700);cursor:pointer;transition:all .15s;font-weight:500}
+.opt:hover{border-color:var(--blue);background:var(--blue-lt)}
+.opt.sel{border-color:var(--blue);background:var(--blue-lt);color:#1e40af}
+.opt-letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--g100);font-size:11px;font-weight:700;color:var(--g500);flex-shrink:0;transition:all .15s}
+.opt.sel .opt-letter{background:var(--blue);color:#fff}
+/* Profile */
+.prof-opt{display:flex;align-items:center;gap:16px;width:100%;padding:14px 18px;border:2px solid var(--g200);border-radius:14px;background:#fff;text-align:left;cursor:pointer;transition:all .15s;margin-bottom:12px}
+.prof-opt:hover{border-color:var(--blue);background:var(--blue-lt)}
+.prof-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prof-icon svg{width:22px;height:22px;fill:none;stroke:#fff}
+.prof-label{font-weight:600;font-size:14px;color:var(--g800)}
+.prof-sub{font-size:12px;color:var(--g500);margin-top:2px}
+.back-btn{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--blue);cursor:pointer;background:none;border:none;margin-bottom:16px}
+.back-btn:hover{text-decoration:underline}
+.upload-zone{border:2px dashed var(--g300,#d1d5db);border-radius:14px;padding:40px;text-align:center;cursor:pointer;transition:all .15s}
+.upload-zone:hover{border-color:var(--blue);background:var(--blue-lt)}
+.upload-zone.ok{border-color:var(--green);background:var(--green-lt);border-style:solid}
+.upload-zone svg{width:40px;height:40px;stroke:var(--g400);fill:none;margin:0 auto 10px;display:block}
+.upload-zone.ok svg{stroke:var(--green)}
+/* Result */
+.res-header{border-radius:14px;padding:24px;text-align:center;margin-bottom:16px}
+.res-header.pass{background:#f0fdf4;border:2px solid #bbf7d0}
+.res-header.fail{background:#fffbeb;border:2px solid #fde68a}
+.res-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.res-icon.pass{background:#dcfce7}.res-icon.fail{background:#fef9c3}
+.res-icon svg{width:28px;height:28px;stroke-width:2.5;fill:none}
+.res-icon.pass svg{stroke:#16a34a}.res-icon.fail svg{stroke:#d97706}
+.res-title{font-size:20px;font-weight:700}
+.res-title.pass{color:#166534}.res-title.fail{color:#92400e}
+.res-sub{font-size:13px;margin-top:6px}
+.res-sub.pass{color:#15803d}.res-sub.fail{color:#b45309}
+.score-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:6px 16px;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-top:12px}
+.score-pct{font-size:18px;font-weight:700}
+.score-pct.pass{color:#16a34a}.score-pct.fail{color:#d97706}
+.score-raw{font-size:11px;color:var(--g400)}
+.ai-box{background:#fff;border:1px solid var(--g200);border-radius:14px;padding:18px;margin-bottom:14px}
+.sec-title{font-size:13px;font-weight:600;color:var(--g800);display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.ai-txt{font-size:13px;color:var(--g600);line-height:1.6}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.sc{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px}
+.cc{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px}
+.col-title{font-size:12px;font-weight:600;margin-bottom:8px}
+.sc .col-title{color:#166534}.cc .col-title{color:#92400e}
+.col-list{list-style:none}
+.col-list li{font-size:12px;padding:3px 0;display:flex;gap:6px}
+.sc .col-list li{color:#15803d}.cc .col-list li{color:#b45309}
+.job-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px;margin-bottom:14px}
+.job-title{font-size:15px;font-weight:600;color:#1e3a8a}
+.job-meta{font-size:13px;color:#1d4ed8;margin-top:4px}
+.job-dist{font-size:12px;color:#3b82f6;margin-top:2px}
+.job-link{display:inline-block;margin-top:10px;font-size:13px;font-weight:600;color:#1d4ed8;text-decoration:underline;text-underline-offset:2px}
+.apply-btn{display:block;width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;transition:background .15s;margin-bottom:14px}
+.apply-btn:hover{background:var(--blue-dark)}
+.done-note{text-align:center;font-size:12px;color:var(--g400)}
+.submitting-step{font-size:13px;color:var(--g400);padding:3px 0}.submitting-step.done{color:var(--g500)}.submitting-step.active{color:var(--blue)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@media(max-width:480px){.card{padding:20px}.two-col{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="banner">⚠ PREVIEW MODE — No data is stored, no emails are sent, and AI evaluation is simulated.</div>
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+    </div>
+    <div><div class="logo-name">Comparion Insurance</div><div class="logo-sub">Sales Agent Readiness Assessment</div></div>
+  </div>
+  <div class="q-count" id="qcount"></div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="prog-wrap" id="progwrap">
+      <div class="prog-labels"><span id="prog-label">Question 1 of 10</span><span id="prog-pct">10%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:10%"></div></div>
+    </div>
+    <div class="card" id="card"></div>
+    <footer-note id="foot">© 2025 Comparion Insurance Agency · Powered by AI · Preview Mode</footer-note>
+  </div>
+</main>
+<script>
+const QUESTIONS=[
+  {id:'q1',n:1,text:'Are you currently licensed as an insurance agent, or willing to obtain your license?',sub:'A license is required within 90 days of hire.',opts:[
+    {id:'a',text:'Yes — I already hold an active insurance license',pts:4},
+    {id:'b',text:"Yes — I'm willing to obtain my license within 90 days",pts:3},
+    {id:'c',text:"I'm not sure yet",pts:1},
+    {id:'d',text:"No — I'm not willing to obtain a license",pts:0}]},
+  {id:'q2',n:2,text:'How would you describe your sales experience?',sub:'',opts:[
+    {id:'a',text:'3+ years of professional sales (any industry)',pts:4},
+    {id:'b',text:'1–3 years of sales experience',pts:3},
+    {id:'c',text:'Less than 1 year of sales experience',pts:2},
+    {id:'d',text:'No formal sales experience',pts:1}]},
+  {id:'q3',n:3,text:'How comfortable are you working in a commission-based compensation structure?',sub:'Insurance sales agents earn primarily through commissions and bonuses.',opts:[
+    {id:'a',text:'Very comfortable — I thrive on performance-based pay',pts:4},
+    {id:'b',text:'Comfortable with a mix of base pay + commission',pts:3},
+    {id:'c',text:"I'm open to it but prefer more guaranteed income",pts:2},
+    {id:'d',text:'I strongly prefer a fixed salary',pts:0}]},
+  {id:'q4',n:4,text:'How do you feel about prospecting — reaching out to new potential clients?',sub:'',opts:[
+    {id:'a',text:'I enjoy it and actively seek new clients',pts:4},
+    {id:'b',text:"I'm comfortable with it and see it as part of the job",pts:3},
+    {id:'c',text:"I'm willing to learn and improve this skill",pts:2},
+    {id:'d',text:'I find cold outreach very uncomfortable',pts:0}]},
+  {id:'q5',n:5,text:'What is your availability for this role?',sub:'',opts:[
+    {id:'a',text:'Full-time, 40+ hours per week',pts:4},
+    {id:'b',text:'Full-time, 30–40 hours per week',pts:3},
+    {id:'c',text:'Part-time, 20–30 hours per week',pts:2},
+    {id:'d',text:'Part-time, fewer than 20 hours per week',pts:1}]},
+  {id:'q6',n:6,text:'What is your primary motivation for pursuing a career in insurance sales?',sub:'',opts:[
+    {id:'a',text:'Long-term career helping families protect what matters most',pts:4},
+    {id:'b',text:'High earning potential and financial independence',pts:3},
+    {id:'c',text:'Flexibility and work-life balance',pts:2},
+    {id:'d',text:"I'm exploring my options right now",pts:1}]},
+  {id:'q7',n:7,text:'How would you rate your ability to explain complex concepts in simple, relatable terms?',sub:'',opts:[
+    {id:'a',text:'Excellent — I do this naturally and regularly',pts:4},
+    {id:'b',text:'Good — I can do this with a bit of preparation',pts:3},
+    {id:'c',text:"Fair — I'm still developing this skill",pts:2},
+    {id:'d',text:'I often struggle to simplify complex information',pts:1}]},
+  {id:'q8',n:8,text:'Do you have reliable transportation to meet with clients?',sub:'',opts:[
+    {id:'a',text:'Yes — I have my own reliable vehicle',pts:4},
+    {id:'b',text:'Yes — I can use public transit or rideshare reliably',pts:3},
+    {id:'c',text:'I have limited but workable transportation options',pts:2},
+    {id:'d',text:'Transportation is a significant challenge for me',pts:0}]},
+  {id:'q9',n:9,text:"How do you typically respond when a potential client says \"no\"?",sub:'',opts:[
+    {id:'a',text:"I see it as part of the process — it doesn't slow me down",pts:4},
+    {id:'b',text:'I take a moment to reflect, then move forward with energy',pts:3},
+    {id:'c',text:"It's challenging, but I push through it",pts:2},
+    {id:'d',text:'Rejection is very discouraging and difficult for me',pts:0}]},
+  {id:'q10',n:10,text:'Are you able to pass a background check?',sub:'A clean background check is required to obtain an insurance license.',opts:[
+    {id:'a',text:'Yes — I have a clean background record',pts:4},
+    {id:'b',text:'Yes — I have minor issues that should not affect licensing',pts:2},
+    {id:'c',text:"I'm not certain — I'd need to review my record",pts:1},
+    {id:'d',text:'I have issues that may prevent me from being licensed',pts:0}]}
+];
+const MAX_SCORE=40;
+const PASS_PCT=65;
+const JOB_LOCS=[
+  {office:'Los Angeles Office',city:'Los Angeles',state:'CA',lat:34.0522,lng:-118.2437},
+  {office:'San Francisco Office',city:'San Francisco',state:'CA',lat:37.7749,lng:-122.4194},
+  {office:'Dallas Office',city:'Dallas',state:'TX',lat:32.7767,lng:-96.797},
+  {office:'Houston Office',city:'Houston',state:'TX',lat:29.7604,lng:-95.3698},
+  {office:'Austin Office',city:'Austin',state:'TX',lat:30.2672,lng:-97.7431},
+  {office:'Miami Office',city:'Miami',state:'FL',lat:25.7617,lng:-80.1918},
+  {office:'Orlando Office',city:'Orlando',state:'FL',lat:28.5383,lng:-81.3792},
+  {office:'Tampa Office',city:'Tampa',state:'FL',lat:27.9506,lng:-82.4572},
+  {office:'New York City Office',city:'New York',state:'NY',lat:40.7128,lng:-74.006},
+  {office:'Chicago Office',city:'Chicago',state:'IL',lat:41.8781,lng:-87.6298},
+  {office:'Atlanta Office',city:'Atlanta',state:'GA',lat:33.749,lng:-84.388},
+  {office:'Phoenix Office',city:'Phoenix',state:'AZ',lat:33.4484,lng:-112.074},
+  {office:'Seattle Office',city:'Seattle',state:'WA',lat:47.6062,lng:-122.3321},
+  {office:'Denver Office',city:'Denver',state:'CO',lat:39.7392,lng:-104.9903},
+  {office:'Charlotte Office',city:'Charlotte',state:'NC',lat:35.2271,lng:-80.8431},
+  {office:'Nashville Office',city:'Nashville',state:'TN',lat:36.1627,lng:-86.7816},
+  {office:'Boston Office',city:'Boston',state:'MA',lat:42.3601,lng:-71.0589},
+  {office:'Las Vegas Office',city:'Las Vegas',state:'NV',lat:36.1699,lng:-115.1398},
+  {office:'San Antonio Office',city:'San Antonio',state:'TX',lat:29.4241,lng:-98.4936},
+  {office:'San Diego Office',city:'San Diego',state:'CA',lat:32.7157,lng:-117.1611}
+];
+// ── State ────────────────────────────────────────────────────────────────────
+let S={step:'welcome',qi:0,contact:{},answers:[],profile:{},nearestJob:null};
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function rad(d){return d*Math.PI/180}
+function dist(a,b,c,d){
+  const R=3958.8,dLat=rad(c-a),dLng=rad(d-b);
+  return R*2*Math.atan2(Math.sqrt(Math.sin(dLat/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(dLng/2)**2),
+    Math.sqrt(1-Math.sin(dLat/2)**2-Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(dLng/2)**2));
+}
+function nearestJob(lat,lng){
+  let best=JOB_LOCS[0],min=Infinity;
+  JOB_LOCS.forEach(j=>{const d=dist(lat,lng,j.lat,j.lng);if(d<min){min=d;best=j}});
+  return{...best,miles:Math.round(min)};
+}
+function calcScore(answers){
+  const raw=answers.reduce((s,a)=>s+a.pts,0);
+  const pct=Math.round(raw/MAX_SCORE*100);
+  return{raw,pct,passed:pct>=PASS_PCT};
+}
+function mockAI(firstName,score){
+  const p=score.passed;
+  return{
+    summary:p
+      ?`${firstName} shows strong readiness for an insurance sales career. Their responses indicate comfort with performance-based pay, a proactive approach to client development, and the resilience needed to thrive in a competitive sales environment.`
+      :`${firstName} shows genuine interest in insurance sales, but some responses suggest potential misalignment with core role requirements — particularly around commission-based pay and prospecting comfort.`,
+    strengths:p
+      ?['Commission-driven motivation aligns well with agent pay structure','Resilient attitude toward rejection and setbacks','Proactive approach to finding and developing new clients']
+      :['Expressed genuine interest in the insurance industry','Open to learning and growing within a new field'],
+    concerns:p
+      ?['License status will need to be confirmed before first client meeting']
+      :['Commission-only structure may not match current income expectations','Additional coaching on prospecting and cold outreach will be needed']
+  };
+}
+function set(newState){Object.assign(S,newState);render()}
+function svgCheck(){return`<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`}
+function svgInfo(){return`<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`}
+function svgUpload(){return`<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>`}
+// ── Render screens ───────────────────────────────────────────────────────────
+function renderWelcome(){
+  document.getElementById('progwrap').style.display='none';
+  document.getElementById('qcount').style.display='none';
+  return`<div class="fi" style="text-align:center">
+    <div class="welcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+    <h1>Join Our Team of Insurance Professionals</h1>
+    <p class="desc">Take our <strong>2-minute readiness assessment</strong> to find out if you're a great fit for an Insurance Sales Agent career with Comparion Insurance.</p>
+    <ul class="checklist">
+      <li>10 multiple-choice questions</li>
+      <li>Instant AI-powered match decision</li>
+      <li>See the nearest open position near you</li>
+      <li>Qualified candidates get an immediate interview invitation</li>
+    </ul>
+    <button class="btn btn-blue" onclick="set({step:'contact'})">Start My Assessment →</button>
+    <p class="hint">Takes about 2 minutes · No account required</p>
+  </div>`
+}
+
+function renderContact(){
+  document.getElementById('progwrap').style.display='none';
+  document.getElementById('qcount').style.display='none';
+  return`<div class="fi">
+    <div style="margin-bottom:20px"><h2 style="font-size:18px;color:var(--g900)">Let's get started</h2><p style="font-size:13px;color:var(--g500);margin-top:6px">Tell us a little about yourself before we begin the assessment.</p></div>
+    <div class="form-row">
+      <div class="fg"><label>First Name</label><input id="fn" type="text" placeholder="Jane" oninput="clearErr('fn-e')"></div>
+      <div class="fg"><label>Last Name</label><input id="ln" type="text" placeholder="Smith" oninput="clearErr('ln-e')"></div>
+    </div>
+    <div id="fn-e" class="ferr" style="display:none;margin-top:-10px;margin-bottom:8px"></div>
+    <div class="fg"><label>Email Address</label><input id="em" type="email" placeholder="jane@example.com" oninput="clearErr('em-e')"></div>
+    <div id="em-e" class="ferr" style="display:none;margin-bottom:8px"></div>
+    <div class="fg"><label>Phone Number <span style="color:var(--g400)">(optional)</span></label><input id="ph" type="tel" placeholder="(555) 000-0000"></div>
+    <button class="btn btn-blue" onclick="submitContact()" style="margin-top:6px">Begin Assessment →</button>
+  </div>`
+}
+
+function submitContact(){
+  const fn=document.getElementById('fn').value.trim();
+  const ln=document.getElementById('ln').value.trim();
+  const em=document.getElementById('em').value.trim();
+  let ok=true;
+  if(!fn){showErr('fn-e','First name is required');document.getElementById('fn').classList.add('err');ok=false}
+  if(!ln){showErr('ln-e','Last name is required');document.getElementById('ln').classList.add('err');ok=false}
+  if(!em||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showErr('em-e','A valid email is required');document.getElementById('em').classList.add('err');ok=false}
+  if(!ok)return;
+  S.contact={firstName:fn,lastName:ln,email:em,phone:document.getElementById('ph').value.trim()};
+  set({step:'question',qi:0,answers:[]});
+}
+function showErr(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.style.display='block'}}
+function clearErr(id){const e=document.getElementById(id);if(e)e.style.display='none'}
+
+function renderQuestion(){
+  const q=QUESTIONS[S.qi];
+  const pct=Math.round((S.qi+1)/QUESTIONS.length*100);
+  const pw=document.getElementById('progwrap');pw.style.display='block';
+  document.getElementById('prog-label').textContent=`Question ${S.qi+1} of ${QUESTIONS.length}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  const qc=document.getElementById('qcount');qc.style.display='block';qc.textContent=`${S.qi}/${QUESTIONS.length} answered`;
+  return`<div class="fi">
+    <span class="q-tag">Question ${q.n} of 10</span>
+    <div class="q-text">${q.text}</div>
+    ${q.sub?`<div class="q-sub">${q.sub}</div>`:''}
+    <div class="options">${q.opts.map(o=>`
+      <button class="opt" id="opt-${o.id}" onclick="pickAnswer('${q.id}','${o.id}',${o.pts})">
+        <span class="opt-letter">${o.id.toUpperCase()}</span>${o.text}
+      </button>`).join('')}
+    </div>
+  </div>`
+}
+
+function pickAnswer(qid,oid,pts){
+  document.querySelectorAll('.opt').forEach(b=>{b.classList.remove('sel');b.querySelector('.opt-letter').style.background='';b.querySelector('.opt-letter').style.color=''});
+  const btn=document.getElementById('opt-'+oid);
+  if(btn){btn.classList.add('sel')}
+  setTimeout(()=>{
+    S.answers=[...S.answers,{qid,oid,pts}];
+    const next=S.qi+1;
+    if(next<QUESTIONS.length){set({step:'question',qi:next})}
+    else{document.getElementById('progwrap').style.display='none';document.getElementById('qcount').style.display='none';set({step:'profile',profileMode:'choose'})}
+  },320);
+}
+function renderProfile(){
+  const m=S.profileMode||'choose';
+  if(m==='choose')return renderProfileChoose();
+  if(m==='linkedin')return renderProfileLinkedIn();
+  if(m==='resume')return renderProfileResume();
+  return'';
+}
+
+function renderProfileChoose(){
+  return`<div class="fi">
+    <div style="margin-bottom:20px"><h2 style="font-size:18px">Tell us about your background</h2><p style="font-size:13px;color:var(--g500);margin-top:6px">Connect LinkedIn or upload your resume so we can personalize your match. This step is optional.</p></div>
+    <button class="prof-opt" onclick="set({step:'profile',profileMode:'linkedin'})">
+      <div class="prof-icon" style="background:#0A66C2"><svg viewBox="0 0 24 24" fill="white" stroke="none"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+      <div><div class="prof-label">Connect LinkedIn</div><div class="prof-sub">Auto-pull your work history and profile</div></div>
+    </button>
+    <button class="prof-opt" onclick="set({step:'profile',profileMode:'resume'})">
+      <div class="prof-icon" style="background:#374151"><svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+      <div><div class="prof-label">Upload Resume</div><div class="prof-sub">PDF, DOC, DOCX, or TXT — up to 5 MB</div></div>
+    </button>
+    <button class="btn btn-skip" onclick="submitProfile({skipped:true})">Skip this step →</button>
+  </div>`
+}
+
+function renderProfileLinkedIn(){
+  return`<div class="fi">
+    <button class="back-btn" onclick="set({step:'profile',profileMode:'choose'})">← Back</button>
+    <h2 style="font-size:18px;margin-bottom:6px">Enter your LinkedIn URL</h2>
+    <p style="font-size:13px;color:var(--g500);margin-bottom:20px">Go to your LinkedIn profile and copy the URL from your browser.</p>
+    <div class="fg"><label>LinkedIn Profile URL</label><input id="liurl" type="url" placeholder="https://linkedin.com/in/your-name"></div>
+    <div id="li-e" class="ferr" style="display:none;margin-bottom:10px"></div>
+    <button class="btn btn-li" onclick="submitLinkedIn()">Connect LinkedIn</button>
+  </div>`
+}
+
+function submitLinkedIn(){
+  const url=document.getElementById('liurl').value.trim();
+  if(!url||!url.includes('linkedin.com/in/')){showErr('li-e','Please enter a valid LinkedIn profile URL (linkedin.com/in/...)');return}
+  submitProfile({linkedInUrl:url});
+}
+
+function renderProfileResume(){
+  const uploaded=S.uploadedFile;
+  return`<div class="fi">
+    <button class="back-btn" onclick="set({step:'profile',profileMode:'choose'})">← Back</button>
+    <h2 style="font-size:18px;margin-bottom:6px">Upload your resume</h2>
+    <p style="font-size:13px;color:var(--g500);margin-bottom:20px">Accepted: PDF, DOC, DOCX, TXT — Max 5 MB</p>
+    <div class="upload-zone${uploaded?' ok':''}" onclick="document.getElementById('resumeFile').click()">
+      <div class="upload-icon">${uploaded?svgCheck():svgUpload()}</div>
+      ${uploaded
+        ?`<p style="font-weight:600;color:var(--green)">${uploaded}</p><p style="font-size:12px;color:var(--green);margin-top:4px">Resume uploaded!</p>`
+        :`<p style="font-weight:600;color:var(--g700)">Click to upload your resume</p><p style="font-size:12px;color:var(--g400);margin-top:4px">or drag and drop</p>`}
+    </div>
+    <input type="file" id="resumeFile" style="display:none" accept=".pdf,.doc,.docx,.txt" onchange="handleResume(this)">
+    <div id="res-e" class="ferr" style="display:none;margin-top:8px"></div>
+  </div>`
+}
+
+function handleResume(input){
+  const file=input.files[0];
+  if(!file)return;
+  const allowed=['application/pdf','text/plain','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  if(!allowed.includes(file.type)&&!file.name.match(/\.(pdf|doc|docx|txt)$/i)){showErr('res-e','Unsupported file type. Please upload PDF, DOC, DOCX, or TXT.');return}
+  if(file.size>5*1024*1024){showErr('res-e','File too large. Max 5 MB.');return}
+  S.uploadedFile=file.name;
+  render();
+  setTimeout(()=>submitProfile({resumeFileName:file.name}),600);
+}
+
+function submitProfile(profileData){
+  Object.assign(S.profile,profileData);
+  set({step:'submitting'});
+  // Try geolocation, then simulate eval after 2.2s
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      pos=>{S.nearestJob=nearestJob(pos.coords.latitude,pos.coords.longitude)},
+      ()=>{S.nearestJob={office:'Dallas Office',city:'Dallas',state:'TX',miles:12}},
+      {timeout:3000}
+    );
+  } else {
+    S.nearestJob={office:'Dallas Office',city:'Dallas',state:'TX',miles:12};
+  }
+  let elapsed=0;
+  const steps=['step-1','step-2','step-3'];
+  const iv=setInterval(()=>{
+    elapsed+=700;
+    const idx=Math.floor(elapsed/700)-1;
+    if(idx<steps.length){
+      const el=document.getElementById(steps[idx]);
+      if(el)el.className='submitting-step done';
+      const next=document.getElementById(steps[idx+1]);
+      if(next)next.className='submitting-step active';
+    }
+    if(elapsed>=2200){clearInterval(iv);finishEval()}
+  },700);
+}
+function renderSubmitting(){
+  return`<div class="fi" style="text-align:center;padding:32px 0">
+    <div class="spinner"></div>
+    <h2 style="font-size:18px;margin-bottom:8px">Evaluating your profile…</h2>
+    <p style="font-size:13px;color:var(--g500)">Our AI is analyzing your responses and finding the best opportunity near you.</p>
+    <div style="margin-top:24px;text-align:left;display:inline-block">
+      <div class="submitting-step done" id="step-1">✓ Scoring your assessment</div>
+      <div class="submitting-step active" id="step-2" style="color:var(--blue)">✓ Matching your location</div>
+      <div class="submitting-step" id="step-3" style="animation:pulse 1s infinite;color:var(--g400)">⟳ Running AI evaluation…</div>
+    </div>
+  </div>`
+}
+
+function finishEval(){
+  const score=calcScore(S.answers);
+  const ai=mockAI(S.contact.firstName||'there',score);
+  const job=S.nearestJob||{office:'Dallas Office',city:'Dallas',state:'TX',miles:12};
+  set({step:'result',score,ai,job});
+}
+
+function renderResult(){
+  const{score,ai,job,contact}=S;
+  const p=score.passed;
+  const name=contact.firstName||'there';
+  return`<div class="fi">
+    <div class="res-header ${p?'pass':'fail'}">
+      <div class="res-icon ${p?'pass':'fail'}">${p?svgCheck():svgInfo()}</div>
+      <div class="res-title ${p?'pass':'fail'}">${p?`Great news, ${name}!`:`Thanks for applying, ${name}!`}</div>
+      <div class="res-sub ${p?'pass':'fail'}">${p?"You're a strong match for our Insurance Sales Agent role.":'This role may not be the best fit at this time — check back as requirements evolve.'}</div>
+      ${p?`<p style="font-size:12px;color:#15803d;margin-top:6px">An interview invitation would be sent to your email.</p>`:''}
+      <div class="score-badge">
+        <span style="font-size:13px;color:var(--g500)">Assessment Score</span>
+        <span class="score-pct ${p?'pass':'fail'}">${score.pct}%</span>
+        <span class="score-raw">(${score.raw}/${MAX_SCORE} pts)</span>
+      </div>
+    </div>
+
+    <div class="ai-box">
+      <div class="sec-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        AI Profile Summary
+      </div>
+      <div class="ai-txt">${ai.summary}</div>
+    </div>
+
+    <div class="two-col">
+      <div class="sc">
+        <div class="col-title">Strengths</div>
+        <ul class="col-list">${ai.strengths.map(s=>`<li><span>✓</span>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="cc">
+        <div class="col-title">Areas to Develop</div>
+        <ul class="col-list">${ai.concerns.map(c=>`<li><span>○</span>${c}</li>`).join('')}</ul>
+      </div>
+    </div>
+
+    <div class="job-box">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span style="font-size:13px;font-weight:600;color:#1e3a8a">Nearest Open Position</span>
+      </div>
+      <div class="job-title">Insurance Sales Agent</div>
+      <div class="job-meta">${job.office} — ${job.city}, ${job.state}</div>
+      ${job.miles?`<div class="job-dist">~${job.miles} miles from your location</div>`:''}
+      <a class="job-link" href="https://www.comparioninsurance.com/careers" target="_blank" rel="noopener">View Full Job Posting →</a>
+    </div>
+
+    ${p?`<a class="apply-btn" href="https://www.comparioninsurance.com/careers" target="_blank" rel="noopener">Apply Now at Comparion Insurance →</a>`:''}
+    <p class="done-note">Your results would be shared with our recruiting team. We'd be in touch soon.</p>
+  </div>`
+}
+
+// ── Main render ───────────────────────────────────────────────────────────────
+function render(){
+  const card=document.getElementById('card');
+  let html='';
+  if(S.step==='welcome')html=renderWelcome();
+  else if(S.step==='contact')html=renderContact();
+  else if(S.step==='question')html=renderQuestion();
+  else if(S.step==='profile')html=renderProfile();
+  else if(S.step==='submitting')html=renderSubmitting();
+  else if(S.step==='result')html=renderResult();
+  card.innerHTML=html;
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
