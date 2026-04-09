@@ -190,6 +190,15 @@ const QUESTIONS=[
 ];
 const MAX_SCORE=40;
 const PASS_PCT=65;
+// Fisher-Yates shuffle — returns a NEW shuffled array, never mutates original
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+// Weighted scoring: questions=20%, profile=80%
+function calcWeightedScore(answers,profileType){
+  const qPct=answers.reduce((s,a)=>s+a.pts,0)/MAX_SCORE*100;
+  const profScore={linkedin:90,resume:65,skipped:20,none:20}[profileType]||20;
+  const final=Math.round(qPct*0.20+profScore*0.80);
+  return{finalPct:final,qPct:Math.round(qPct),profPct:profScore,passed:final>=PASS_PCT};
+}
 const JOB_LOCS=[
   {office:'Los Angeles Office',city:'Los Angeles',state:'CA',lat:34.0522,lng:-118.2437},
   {office:'San Francisco Office',city:'San Francisco',state:'CA',lat:37.7749,lng:-122.4194},
@@ -213,7 +222,8 @@ const JOB_LOCS=[
   {office:'San Diego Office',city:'San Diego',state:'CA',lat:32.7157,lng:-117.1611}
 ];
 // ── State ────────────────────────────────────────────────────────────────────
-let S={step:'welcome',qi:0,contact:{},answers:[],profile:{},nearestJob:null};
+// shuffledOpts[i] holds the randomised option order for question i, set once on first render
+let S={step:'welcome',qi:0,contact:{},answers:[],profile:{},nearestJob:null,shuffledOpts:{}};
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function rad(d){return d*Math.PI/180}
@@ -227,13 +237,8 @@ function nearestJob(lat,lng){
   JOB_LOCS.forEach(j=>{const d=dist(lat,lng,j.lat,j.lng);if(d<min){min=d;best=j}});
   return{...best,miles:Math.round(min)};
 }
-function calcScore(answers){
-  const raw=answers.reduce((s,a)=>s+a.pts,0);
-  const pct=Math.round(raw/MAX_SCORE*100);
-  return{raw,pct,passed:pct>=PASS_PCT};
-}
 function mockAI(firstName,score){
-  const p=score.passed;
+  const p=score.passed;  // score.passed uses finalPct (weighted)
   return{
     summary:p
       ?`${firstName} shows strong readiness for an insurance sales career. Their responses indicate comfort with performance-based pay, a proactive approach to client development, and the resilience needed to thrive in a competitive sales environment.`
@@ -303,6 +308,10 @@ function clearErr(id){const e=document.getElementById(id);if(e)e.style.display='
 
 function renderQuestion(){
   const q=QUESTIONS[S.qi];
+  // Shuffle once per question index — reuse on re-render so selection stays stable
+  if(!S.shuffledOpts[S.qi]){S.shuffledOpts[S.qi]=shuffle(q.opts)}
+  const opts=S.shuffledOpts[S.qi];
+  const letters=['A','B','C','D','E'];
   const pct=Math.round((S.qi+1)/QUESTIONS.length*100);
   const pw=document.getElementById('progwrap');pw.style.display='block';
   document.getElementById('prog-label').textContent=`Question ${S.qi+1} of ${QUESTIONS.length}`;
@@ -313,9 +322,9 @@ function renderQuestion(){
     <span class="q-tag">Question ${q.n} of 10</span>
     <div class="q-text">${q.text}</div>
     ${q.sub?`<div class="q-sub">${q.sub}</div>`:''}
-    <div class="options">${q.opts.map(o=>`
+    <div class="options">${opts.map((o,i)=>`
       <button class="opt" id="opt-${o.id}" onclick="pickAnswer('${q.id}','${o.id}',${o.pts})">
-        <span class="opt-letter">${o.id.toUpperCase()}</span>${o.text}
+        <span class="opt-letter">${letters[i]}</span>${o.text}
       </button>`).join('')}
     </div>
   </div>`
@@ -342,16 +351,28 @@ function renderProfile(){
 
 function renderProfileChoose(){
   return`<div class="fi">
-    <div style="margin-bottom:20px"><h2 style="font-size:18px">Tell us about your background</h2><p style="font-size:13px;color:var(--g500);margin-top:6px">Connect LinkedIn or upload your resume so we can personalize your match. This step is optional.</p></div>
-    <button class="prof-opt" onclick="set({step:'profile',profileMode:'linkedin'})">
+    <div style="margin-bottom:20px">
+      <h2 style="font-size:18px">One last step — connect your profile</h2>
+      <p style="font-size:13px;color:var(--g500);margin-top:6px">Your professional background is the most important part of your match. LinkedIn gives us the most complete picture and significantly improves your score.</p>
+    </div>
+    <!-- LinkedIn — preferred -->
+    <button class="prof-opt" onclick="set({step:'profile',profileMode:'linkedin'})" style="border-color:#0A66C2;background:#f0f7ff;position:relative">
       <div class="prof-icon" style="background:#0A66C2"><svg viewBox="0 0 24 24" fill="white" stroke="none"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
-      <div><div class="prof-label">Connect LinkedIn</div><div class="prof-sub">Auto-pull your work history and profile</div></div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="prof-label">Connect LinkedIn</div>
+          <span style="background:#0A66C2;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:.03em">★ RECOMMENDED</span>
+        </div>
+        <div class="prof-sub">Best match accuracy — we use your full work history, skills, and experience to find the right role for you</div>
+      </div>
     </button>
+    <!-- Resume — secondary -->
     <button class="prof-opt" onclick="set({step:'profile',profileMode:'resume'})">
       <div class="prof-icon" style="background:#374151"><svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
       <div><div class="prof-label">Upload Resume</div><div class="prof-sub">PDF, DOC, DOCX, or TXT — up to 5 MB</div></div>
     </button>
     <button class="btn btn-skip" onclick="submitProfile({skipped:true})">Skip this step →</button>
+    <p style="font-size:11px;color:var(--g400);text-align:center;margin-top:8px">Skipping this step will significantly reduce your match score.</p>
   </div>`
 }
 
@@ -402,6 +423,8 @@ function handleResume(input){
 
 function submitProfile(profileData){
   Object.assign(S.profile,profileData);
+  // Record profile type for weighted scoring
+  S.profileType=profileData.linkedInUrl?'linkedin':profileData.resumeFileName?'resume':'skipped';
   set({step:'submitting'});
   // Try geolocation, then simulate eval after 2.2s
   if(navigator.geolocation){
@@ -441,50 +464,26 @@ function renderSubmitting(){
 }
 
 function finishEval(){
-  const score=calcScore(S.answers);
+  const score=calcWeightedScore(S.answers,S.profileType||'none');
   const ai=mockAI(S.contact.firstName||'there',score);
   const job=S.nearestJob||{office:'Dallas Office',city:'Dallas',state:'TX',miles:12};
   set({step:'result',score,ai,job});
 }
 
 function renderResult(){
-  const{score,ai,job,contact}=S;
+  const{score,job,contact}=S;
   const p=score.passed;
   const name=contact.firstName||'there';
   return`<div class="fi">
     <div class="res-header ${p?'pass':'fail'}">
       <div class="res-icon ${p?'pass':'fail'}">${p?svgCheck():svgInfo()}</div>
       <div class="res-title ${p?'pass':'fail'}">${p?`Great news, ${name}!`:`Thanks for applying, ${name}!`}</div>
-      <div class="res-sub ${p?'pass':'fail'}">${p?"You're a strong match for our Insurance Sales Agent role.":'This role may not be the best fit at this time — check back as requirements evolve.'}</div>
-      ${p?`<p style="font-size:12px;color:#15803d;margin-top:6px">An interview invitation would be sent to your email.</p>`:''}
-      <div class="score-badge">
-        <span style="font-size:13px;color:var(--g500)">Assessment Score</span>
-        <span class="score-pct ${p?'pass':'fail'}">${score.pct}%</span>
-        <span class="score-raw">(${score.raw}/${MAX_SCORE} pts)</span>
-      </div>
-    </div>
-
-    <div class="ai-box">
-      <div class="sec-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-        AI Profile Summary
-      </div>
-      <div class="ai-txt">${ai.summary}</div>
-    </div>
-
-    <div class="two-col">
-      <div class="sc">
-        <div class="col-title">Strengths</div>
-        <ul class="col-list">${ai.strengths.map(s=>`<li><span>✓</span>${s}</li>`).join('')}</ul>
-      </div>
-      <div class="cc">
-        <div class="col-title">Areas to Develop</div>
-        <ul class="col-list">${ai.concerns.map(c=>`<li><span>○</span>${c}</li>`).join('')}</ul>
-      </div>
+      <div class="res-sub ${p?'pass':'fail'}">${p?"You're a strong match for our Insurance Sales Agent role. Our recruiting team will be in touch shortly to schedule your interview.":'Based on your responses, this role may not be the right fit at this time. We appreciate your interest and encourage you to check back as our needs evolve.'}</div>
+      ${p?`<p style="font-size:12px;color:#15803d;margin-top:10px;font-weight:600">✉ An interview invitation has been sent to your email.</p>`:''}
     </div>
 
     <div class="job-box">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         <span style="font-size:13px;font-weight:600;color:#1e3a8a">Nearest Open Position</span>
       </div>
@@ -495,7 +494,7 @@ function renderResult(){
     </div>
 
     ${p?`<a class="apply-btn" href="https://www.comparioninsurance.com/careers" target="_blank" rel="noopener">Apply Now at Comparion Insurance →</a>`:''}
-    <p class="done-note">Your results would be shared with our recruiting team. We'd be in touch soon.</p>
+    <p class="done-note">Your results have been shared with our recruiting team.</p>
   </div>`
 }
 
