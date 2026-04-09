@@ -143,7 +143,68 @@ model ContentTemplate {
   updatedAt      DateTime       @updatedAt
 }
 
-// Enums
+// ─── Recruitment Chatbot Models ───────────────────────────────────────────────
+
+model CandidateAssessment {
+  id              String           @id @default(cuid())
+  // Contact info
+  firstName       String
+  lastName        String
+  email           String
+  phone           String?
+  // Location
+  city            String?
+  state           String?
+  zipCode         String?
+  latitude        Float?
+  longitude       Float?
+  nearestJobId    String?
+  nearestJobTitle String?
+  nearestJobUrl   String?
+  nearestOffice   String?
+  distanceMiles   Float?
+  // Profile sources
+  linkedInUrl     String?
+  linkedInData    Json?
+  resumeFileName  String?
+  resumeText      String?
+  // Assessment scores
+  answers         Json             // Array of { questionId, answer, points }
+  rawScore        Int
+  maxScore        Int
+  percentScore    Float
+  passed          Boolean
+  // AI evaluation
+  aiSummary       String?
+  aiStrengths     String[]
+  aiConcerns      String[]
+  aiRecommendation String?
+  // Status tracking
+  status          AssessmentStatus @default(PENDING)
+  inviteSentAt    DateTime?
+  managerNotifiedAt DateTime?
+  // Campaign tracking (for embedded chatbot links)
+  campaignSource  String?          // e.g., "linkedin_ad", "indeed", "email"
+  // Timestamps
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum AssessmentStatus {
+  PENDING
+  EVALUATED
+  PASSED
+  FAILED
+  INVITED
+  HIRED
+  REJECTED
+}
+
+// ─── Enums
 enum Platform {
   FACEBOOK
   INSTAGRAM
