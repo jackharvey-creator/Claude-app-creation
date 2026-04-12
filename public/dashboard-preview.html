@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruitment Dashboard — Comparion Insurance</title>
+<style>
+:root{--blue:#2563eb;--blue-dark:#1d4ed8;--blue-lt:#dbeafe;--green:#16a34a;--green-lt:#dcfce7;--amber:#d97706;--amber-lt:#fef3c7;--red:#dc2626;--purple:#7c3aed;--emerald:#059669;--orange:#ea580c;--indigo:#4338ca;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--g50);min-height:100vh}
+.banner{background:#fbbf24;color:#78350f;text-align:center;font-size:12px;font-weight:600;padding:7px 16px}
+header{background:#fff;border-bottom:1px solid var(--g200);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:20px;height:20px;stroke:#fff;fill:none}
+.logo-name{font-weight:700;font-size:14px;color:var(--g900)}
+.logo-sub{font-size:11px;color:var(--g500)}
+.header-right{display:flex;align-items:center;gap:10px}
+.nav-badge{font-size:11px;background:var(--g100);color:var(--g600);padding:4px 10px;border-radius:999px;font-weight:500}
+.btn-sm{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:background .15s;text-decoration:none}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-dark)}
+.btn-ghost{background:#fff;color:var(--g600);border:1px solid var(--g200)}.btn-ghost:hover{background:var(--g50)}
+.wrap{max-width:1280px;margin:0 auto;padding:28px 24px}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.page-title{font-size:22px;font-weight:700;color:var(--g900)}
+.page-sub{font-size:13px;color:var(--g500);margin-top:3px}
+.chatbot-link-box{background:#fff;border:1px solid var(--g200);border-radius:10px;padding:10px 14px;min-width:220px}
+.chatbot-link-label{font-size:11px;color:var(--g400);margin-bottom:2px}
+.chatbot-link-url{font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+.chatbot-link-url:hover{text-decoration:underline}
+.page-actions{display:flex;align-items:center;gap:8px}
+/* Stat cards */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-card{background:#fff;border:1px solid var(--g200);border-radius:14px;padding:18px 20px}
+.stat-label{font-size:12px;color:var(--g500);margin-bottom:6px}
+.stat-val{font-size:30px;font-weight:700;line-height:1}
+/* Shareable links */
+.section{background:#fff;border:1px solid var(--g200);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.section-header{padding:14px 18px;border-bottom:1px solid var(--g100);display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:14px;font-weight:600;color:var(--g800)}
+.section-body{padding:16px 18px}
+.link-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.link-item{background:var(--g50);border-radius:10px;padding:10px 12px}
+.link-name{font-size:12px;font-weight:600;color:var(--g600);margin-bottom:4px}
+.link-url{font-size:11px;color:var(--blue);word-break:break-all}
+.link-hint{font-size:11px;color:var(--g400);margin-top:10px}
+/* Filters */
+.filters{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--g100);flex-wrap:wrap}
+.filter-btn{padding:5px 14px;border-radius:999px;border:1.5px solid var(--g200);background:#fff;font-size:12px;font-weight:600;color:var(--g500);cursor:pointer;transition:all .15s}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue)}
+.filter-btn.active{border-color:var(--blue);background:var(--blue-lt);color:#1e40af}
+.filter-count{display:inline-block;background:var(--g200);color:var(--g600);font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;margin-left:4px}
+.filter-btn.active .filter-count{background:#bfdbfe;color:#1e40af}
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--g50);border-bottom:1px solid var(--g100)}
+th{text-align:left;padding:10px 14px;font-size:11px;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--g50);transition:background .1s;cursor:pointer}
+tbody tr:hover{background:#f8faff}
+tbody tr.expanded{background:#f0f7ff}
+td{padding:12px 14px;vertical-align:top}
+.candidate-name{font-weight:600;color:var(--g900);font-size:13px}
+.candidate-email{font-size:11px;color:var(--g500);margin-top:1px}
+.candidate-phone{font-size:11px;color:var(--g400)}
+/* Badges */
+.badge{display:inline-block;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-green{background:#dcfce7;color:#15803d}
+.badge-red{background:#fee2e2;color:#b91c1c}
+.badge-blue{background:var(--blue-lt);color:#1e40af}
+.badge-purple{background:#ede9fe;color:#6d28d9}
+.badge-emerald{background:#d1fae5;color:#065f46}
+.badge-gray{background:var(--g100);color:var(--g600)}
+.badge-orange{background:#ffedd5;color:#c2410c}
+.score-num{font-size:11px;color:var(--g400);margin-top:2px}
+/* Expand row */
+.expand-icon{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g500);font-size:11px;font-weight:700;transition:all .15s;flex-shrink:0}
+.expanded .expand-icon{background:var(--blue-lt);color:var(--blue);transform:rotate(180deg)}
+.detail-row td{background:#f0f7ff;padding:0}
+.detail-inner{padding:16px 18px 18px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.detail-box{background:#fff;border:1px solid var(--g200);border-radius:10px;padding:14px}
+.detail-label{font-size:11px;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.detail-text{font-size:13px;color:var(--g700);line-height:1.5}
+.strength-item{font-size:12px;color:#15803d;padding:2px 0;display:flex;gap:6px}
+.concern-item{font-size:12px;color:#b45309;padding:2px 0;display:flex;gap:6px}
+.rec-text{font-size:13px;color:var(--blue);font-style:italic;font-weight:500}
+.action-link{font-size:12px;font-weight:600;text-decoration:none;padding:4px 0}
+.action-email{color:var(--blue)}.action-email:hover{text-decoration:underline}
+.action-apply{color:var(--green)}.action-apply:hover{text-decoration:underline}
+.action-sep{color:var(--g300);margin:0 4px}
+/* AI summary cards */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ai-card{background:#fff;border:1.5px solid #bbf7d0;border-radius:14px;padding:18px}
+.ai-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ai-name{font-size:14px;font-weight:700;color:var(--g900)}
+.ai-summary{font-size:13px;color:var(--g600);line-height:1.55;margin-bottom:10px}
+.ai-strengths{margin-bottom:6px}
+.ai-rec{font-size:12px;color:var(--blue);font-style:italic;font-weight:500;margin-top:8px;padding-top:8px;border-top:1px solid var(--g100)}
+/* Empty state */
+.empty{padding:60px;text-align:center}
+.empty svg{width:48px;height:48px;stroke:var(--g300);fill:none;margin:0 auto 12px;display:block}
+.empty p{font-size:14px;color:var(--g400)}
+/* Source tag */
+.source-tag{font-size:11px;background:#eef2ff;color:var(--indigo);padding:3px 8px;border-radius:999px;font-weight:600}
+.source-direct{font-size:11px;color:var(--g400)}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.link-grid{grid-template-columns:1fr 1fr}.ai-grid{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.page-header{flex-direction:column}.link-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="banner">⚠ PREVIEW MODE — Showing sample data. No live database connection.</div>
+<header>
+  <div class="logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+    <div><div class="logo-name">Comparion Insurance</div><div class="logo-sub">Recruiter Dashboard</div></div>
+  </div>
+  <div class="header-right">
+    <span class="nav-badge">Recruitment</span>
+    <a href="chatbot-preview.html" class="btn-sm btn-ghost" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      Preview Chatbot
+    </a>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- Page header -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">Recruitment Dashboard</div>
+      <div class="page-sub">Insurance Sales Agent candidate assessments</div>
+    </div>
+    <div class="page-actions">
+      <div class="chatbot-link-box">
+        <div class="chatbot-link-label">Chatbot Link</div>
+        <a href="#" class="chatbot-link-url">https://comparioninsurance.com/chatbot</a>
+      </div>
+      <a href="chatbot-preview.html" target="_blank" class="btn-sm btn-blue">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        Open Chatbot
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats" id="stats"></div>
+
+  <!-- Shareable links -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Shareable Assessment Links</span>
+    </div>
+    <div class="section-body">
+      <div class="link-grid">
+        <div class="link-item"><div class="link-name">Direct / Generic</div><div class="link-url">comparioninsurance.com/chatbot?source=direct</div></div>
+        <div class="link-item"><div class="link-name">LinkedIn Ad</div><div class="link-url">comparioninsurance.com/chatbot?source=linkedin_ad</div></div>
+        <div class="link-item"><div class="link-name">Indeed Posting</div><div class="link-url">comparioninsurance.com/chatbot?source=indeed</div></div>
+        <div class="link-item"><div class="link-name">Facebook Ad</div><div class="link-url">comparioninsurance.com/chatbot?source=facebook_ad</div></div>
+        <div class="link-item"><div class="link-name">Email Campaign</div><div class="link-url">comparioninsurance.com/chatbot?source=email</div></div>
+        <div class="link-item"><div class="link-name">SMS Campaign</div><div class="link-url">comparioninsurance.com/chatbot?source=sms</div></div>
+      </div>
+      <p class="link-hint">Append <strong>?source=</strong> to track where candidates come from. All links open the same assessment.</p>
+    </div>
+  </div>
+
+  <!-- Candidates table -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title" id="table-title">Candidates</span>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Candidate</th>
+            <th>Score</th>
+            <th>Status</th>
+            <th>Location</th>
+            <th>Nearest Office</th>
+            <th>Source</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Top AI summaries -->
+  <div id="ai-section"></div>
+</div>
+
+<script>
+const CANDIDATES=[
+  {id:1,firstName:'Priya',lastName:'Nair',email:'priya.nair@email.com',phone:'(972) 555-0453',
+   pct:95,raw:19,max:20,passed:true,status:'HIRED',
+   city:'Plano',state:'TX',office:'Dallas Office',miles:19,
+   source:'direct',date:'Apr 7, 2026',
+   linkedIn:'https://linkedin.com/in/priya-nair',resume:null,
+   summary:"Exceptional candidate. Priya's responses reflect deep alignment with all key role requirements. Her sales background combined with her initiative in pursuing insurance licensure makes her a standout.",
+   strengths:['Top-tier sales background — 6+ years B2B experience','Self-motivated, proactively pursuing licensure','Excellent commission-driven mindset'],
+   concerns:['Will need formal insurance license before first client meeting'],
+   rec:'Top candidate — fast-track to hiring decision.'},
+  {id:2,firstName:'Sarah',lastName:'Mitchell',email:'sarah.mitchell@email.com',phone:'(214) 555-0142',
+   pct:91,raw:18,max:20,passed:true,status:'INVITED',
+   city:'Dallas',state:'TX',office:'Dallas Office',miles:8,
+   source:'linkedin_ad',date:'Apr 10, 2026',
+   linkedIn:'https://linkedin.com/in/sarah-mitchell',resume:null,
+   summary:'Sarah brings 4 years of B2B sales experience and a demonstrated track record of exceeding quota. Strong comfort with commission-based pay and a proactive approach to prospecting.',
+   strengths:['4+ years B2B sales — high transferability to insurance','Commission-driven, top performer mentality','Strong prospecting and pipeline mindset'],
+   concerns:['Will need to verify license status before first client meeting'],
+   rec:'Strong candidate — recommend scheduling a phone screen within 48 hours.'},
+  {id:3,firstName:'Alexis',lastName:'Rivera',email:'alexis.rivera@gmail.com',phone:'(469) 555-0088',
+   pct:89,raw:18,max:20,passed:true,status:'PASSED',
+   city:'Fort Worth',state:'TX',office:'Dallas Office',miles:31,
+   source:'linkedin_ad',date:'Apr 8, 2026',
+   linkedIn:'https://linkedin.com/in/alexis-rivera',resume:null,
+   summary:'Alexis demonstrates strong sales instincts and a client-first mindset. LinkedIn profile shows progressive career growth in financial services with clear upward trajectory.',
+   strengths:['Financial services background — industry adjacent','Client-focused, relationship-driven approach','Progressive career trajectory with leadership indicators'],
+   concerns:['No direct insurance experience — onboarding investment needed'],
+   rec:'Strong candidate — recommend scheduling a phone screen within 48 hours.'},
+  {id:4,firstName:'Marcus',lastName:'Thompson',email:'marcus.t@gmail.com',phone:'(832) 555-0298',
+   pct:84,raw:17,max:20,passed:true,status:'PASSED',
+   city:'Houston',state:'TX',office:'Houston Office',miles:14,
+   source:'indeed',date:'Apr 10, 2026',
+   linkedIn:null,resume:'marcus_thompson_resume.pdf',
+   summary:'Marcus has a solid insurance background and already holds an active license. His responses indicate strong alignment with role expectations and compensation structure.',
+   strengths:['Active insurance license — no ramp time needed','Prior insurance industry experience','Resilient attitude toward rejection'],
+   concerns:['Resume indicates gaps — worth clarifying on screen call'],
+   rec:'Strong candidate — recommend scheduling a phone screen within 48 hours.'},
+  {id:5,firstName:'Tanya',lastName:'Brooks',email:'tanya.brooks@email.com',phone:'(214) 555-0871',
+   pct:72,raw:14,max:20,passed:true,status:'PASSED',
+   city:'Garland',state:'TX',office:'Dallas Office',miles:16,
+   source:'email',date:'Apr 6, 2026',
+   linkedIn:'https://linkedin.com/in/tanya-brooks',resume:null,
+   summary:null,strengths:[],concerns:[],rec:null},
+  {id:6,firstName:'Jennifer',lastName:'Okafor',email:'j.okafor@outlook.com',phone:'',
+   pct:78,raw:16,max:20,passed:true,status:'INVITED',
+   city:'Austin',state:'TX',office:'Austin Office',miles:5,
+   source:'email',date:'Apr 9, 2026',
+   linkedIn:'https://linkedin.com/in/jennifer-okafor',resume:null,
+   summary:null,strengths:[],concerns:[],rec:null},
+  {id:7,firstName:'James',lastName:'Whitfield',email:'j.whitfield@gmail.com',phone:'(210) 555-0602',
+   pct:58,raw:12,max:20,passed:false,status:'FAILED',
+   city:'San Antonio',state:'TX',office:'San Antonio Office',miles:7,
+   source:'indeed',date:'Apr 7, 2026',
+   linkedIn:null,resume:'james_whitfield_cv.pdf',
+   summary:null,strengths:[],concerns:[],rec:null},
+  {id:8,firstName:'Derek',lastName:'Pham',email:'derekpham@email.com',phone:'(512) 555-0371',
+   pct:42,raw:8,max:20,passed:false,status:'FAILED',
+   city:'Austin',state:'TX',office:'Austin Office',miles:22,
+   source:'facebook_ad',date:'Apr 9, 2026',
+   linkedIn:null,resume:null,
+   summary:null,strengths:[],concerns:[],rec:null},
+  {id:9,firstName:'Brandon',lastName:'Cole',email:'brandon.cole@email.com',phone:'(713) 555-0219',
+   pct:35,raw:7,max:20,passed:false,status:'FAILED',
+   city:'Houston',state:'TX',office:'Houston Office',miles:18,
+   source:'sms',date:'Apr 8, 2026',
+   linkedIn:null,resume:null,
+   summary:null,strengths:[],concerns:[],rec:null},
+  {id:10,firstName:'Carlos',lastName:'Mendez',email:'c.mendez@outlook.com',phone:'(956) 555-0134',
+   pct:25,raw:5,max:20,passed:false,status:'FAILED',
+   city:'Laredo',state:'TX',office:'San Antonio Office',miles:86,
+   source:null,date:'Apr 5, 2026',
+   linkedIn:null,resume:null,
+   summary:null,strengths:[],concerns:[],rec:null},
+];
+
+const STATUS_CFG={
+  PENDING:{label:'Pending',cls:'badge-gray'},
+  EVALUATED:{label:'Evaluated',cls:'badge-blue'},
+  PASSED:{label:'Passed',cls:'badge-green'},
+  FAILED:{label:'Failed',cls:'badge-red'},
+  INVITED:{label:'Invited',cls:'badge-purple'},
+  HIRED:{label:'Hired',cls:'badge-emerald'},
+  REJECTED:{label:'Rejected',cls:'badge-orange'},
+};
+
+let activeFilter='all';
+let expandedId=null;
+
+function total(){return CANDIDATES.length}
+function passed(){return CANDIDATES.filter(c=>c.passed).length}
+function invited(){return CANDIDATES.filter(c=>c.status==='INVITED'||c.status==='HIRED').length}
+function passRate(){const t=total();return t>0?Math.round(passed()/t*100):0}
+
+function filtered(){
+  if(activeFilter==='all')return CANDIDATES;
+  if(activeFilter==='passed')return CANDIDATES.filter(c=>c.passed);
+  if(activeFilter==='failed')return CANDIDATES.filter(c=>!c.passed);
+  if(activeFilter==='invited')return CANDIDATES.filter(c=>c.status==='INVITED');
+  if(activeFilter==='hired')return CANDIDATES.filter(c=>c.status==='HIRED');
+  return CANDIDATES;
+}
+
+function renderStats(){
+  const pr=passRate();
+  const stats=[
+    {label:'Total Candidates',val:total(),color:'var(--g800)'},
+    {label:'Passed Assessment',val:passed(),color:'var(--green)'},
+    {label:'Interview Invited',val:invited(),color:'var(--purple)'},
+    {label:'Pass Rate',val:pr+'%',color:pr>=50?'var(--green)':'var(--amber)'},
+  ];
+  document.getElementById('stats').innerHTML=stats.map(s=>`
+    <div class="stat-card">
+      <div class="stat-label">${s.label}</div>
+      <div class="stat-val" style="color:${s.color}">${s.val}</div>
+    </div>`).join('');
+}
+
+function renderFilters(){
+  const counts={
+    all:CANDIDATES.length,
+    passed:CANDIDATES.filter(c=>c.passed).length,
+    failed:CANDIDATES.filter(c=>!c.passed).length,
+    invited:CANDIDATES.filter(c=>c.status==='INVITED').length,
+    hired:CANDIDATES.filter(c=>c.status==='HIRED').length,
+  };
+  const tabs=[
+    {key:'all',label:'All'},
+    {key:'passed',label:'Passed'},
+    {key:'failed',label:'Failed'},
+    {key:'invited',label:'Invited'},
+    {key:'hired',label:'Hired'},
+  ];
+  document.getElementById('filters').innerHTML=tabs.map(t=>`
+    <button class="filter-btn${activeFilter===t.key?' active':''}" onclick="setFilter('${t.key}')">
+      ${t.label}<span class="filter-count">${counts[t.key]}</span>
+    </button>`).join('');
+}
+
+function setFilter(f){
+  activeFilter=f;
+  expandedId=null;
+  renderFilters();
+  renderTable();
+  document.getElementById('table-title').textContent=
+    f==='all'?`Candidates (${total()})`:
+    f==='passed'?`Passed Candidates (${passed()})`:
+    f==='failed'?`Failed Candidates (${CANDIDATES.filter(c=>!c.passed).length})`:
+    f==='invited'?`Interview Invited (${invited()})`:
+    `Hired Candidates (${CANDIDATES.filter(c=>c.status==='HIRED').length})`;
+}
+
+function toggleExpand(id){
+  expandedId=expandedId===id?null:id;
+  renderTable();
+}
+
+function renderTable(){
+  const rows=filtered();
+  const tbody=document.getElementById('tbody');
+  if(rows.length===0){
+    tbody.innerHTML=`<tr><td colspan="9"><div class="empty">
+      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <p>No candidates in this category yet.</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML=rows.map(c=>{
+    const sc=STATUS_CFG[c.status]||{label:c.status,cls:'badge-gray'};
+    const prefill=`firstName=${encodeURIComponent(c.firstName)}&lastName=${encodeURIComponent(c.lastName)}&email=${encodeURIComponent(c.email)}&phone=${encodeURIComponent(c.phone||'')}&city=${encodeURIComponent(c.city||'')}&state=${encodeURIComponent(c.state||'')}`;
+    const applyUrl=`https://www.comparioninsurance.com/careers?${prefill}`;
+    const isExp=expandedId===c.id;
+    const profileIcon=c.linkedIn
+      ?`<span title="LinkedIn" style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:2px 7px;border-radius:999px;font-weight:600;margin-left:6px">LI</span>`
+      :c.resume
+      ?`<span title="Resume" style="font-size:11px;background:var(--g100);color:var(--g600);padding:2px 7px;border-radius:999px;font-weight:600;margin-left:6px">CV</span>`
+      :'';
+    let rows=`<tr class="${isExp?'expanded':''}" onclick="toggleExpand(${c.id})" style="cursor:pointer">
+      <td><span class="expand-icon">${isExp?'▲':'▼'}</span></td>
+      <td>
+        <div style="display:flex;align-items:center">
+          <div class="candidate-name">${c.firstName} ${c.lastName}</div>${profileIcon}
+        </div>
+        <div class="candidate-email">${c.email}</div>
+        ${c.phone?`<div class="candidate-phone">${c.phone}</div>`:''}
+      </td>
+      <td>
+        <span class="badge ${c.passed?'badge-green':'badge-red'}">${c.pct}%</span>
+        <div class="score-num">${c.raw}/${c.max} pts</div>
+      </td>
+      <td><span class="badge ${sc.cls}">${sc.label}</span></td>
+      <td style="font-size:12px;color:var(--g600)">${c.city&&c.state?c.city+', '+c.state:'—'}</td>
+      <td style="font-size:12px;color:var(--g600)">${c.office||'—'}${c.miles?`<span style="color:var(--g400);margin-left:4px">(${c.miles} mi)</span>`:''}</td>
+      <td>${c.source?`<span class="source-tag">${c.source}</span>`:`<span class="source-direct">direct</span>`}</td>
+      <td style="font-size:12px;color:var(--g500);white-space:nowrap">${c.date}</td>
+      <td>
+        <a href="mailto:${c.email}" class="action-link action-email" onclick="event.stopPropagation()">Email</a>
+        <span class="action-sep">·</span>
+        <a href="${applyUrl}" target="_blank" class="action-link action-apply" onclick="event.stopPropagation()">Apply↗</a>
+      </td>
+    </tr>`;
+    if(isExp){
+      rows+=`<tr class="detail-row"><td colspan="9"><div class="detail-inner">`;
+      if(c.summary||c.strengths.length||c.rec){
+        rows+=`<div class="detail-grid">`;
+        if(c.summary){
+          rows+=`<div class="detail-box"><div class="detail-label">AI Summary</div><div class="detail-text">${c.summary}</div>
+          ${c.rec?`<div class="rec-text" style="margin-top:10px;padding-top:8px;border-top:1px solid var(--g100)">${c.rec}</div>`:''}
+          </div>`;
+        }
+        if(c.strengths.length){
+          rows+=`<div><div class="detail-box" style="margin-bottom:10px"><div class="detail-label">Strengths</div>
+          ${c.strengths.map(s=>`<div class="strength-item"><span>✓</span>${s}</div>`).join('')}</div>
+          ${c.concerns.length?`<div class="detail-box"><div class="detail-label">Areas to Develop</div>
+          ${c.concerns.map(x=>`<div class="concern-item"><span>○</span>${x}</div>`).join('')}</div>`:''}
+          </div>`;
+        }
+        rows+=`</div>`;
+      } else {
+        rows+=`<p style="font-size:13px;color:var(--g400);text-align:center;padding:8px 0">No AI summary available for this candidate.</p>`;
+      }
+      rows+=`</div></td></tr>`;
+    }
+    return rows;
+  }).join('');
+}
+
+function renderAiSection(){
+  const top=CANDIDATES.filter(c=>c.passed&&c.summary).slice(0,4);
+  if(!top.length){document.getElementById('ai-section').innerHTML='';return}
+  document.getElementById('ai-section').innerHTML=`
+    <div style="margin-bottom:14px"><div class="section-title" style="font-size:15px">Top Candidate AI Summaries</div></div>
+    <div class="ai-grid">
+      ${top.map(c=>`
+      <div class="ai-card">
+        <div class="ai-card-top">
+          <div class="ai-name">${c.firstName} ${c.lastName}</div>
+          <span class="badge badge-green">${c.pct}%</span>
+        </div>
+        <div class="ai-summary">${c.summary}</div>
+        ${c.strengths.map(s=>`<div class="strength-item"><span>✓</span>${s}</div>`).join('')}
+        ${c.rec?`<div class="ai-rec">${c.rec}</div>`:''}
+      </div>`).join('')}
+    </div>`;
+}
+
+function init(){
+  renderStats();
+  renderFilters();
+  setFilter('all');
+  renderAiSection();
+}
+init();
+</script>
+</body>
+</html>
