@@ -111,6 +111,13 @@ h1{font-size:22px;font-weight:700;color:var(--g900);line-height:1.3;text-align:c
 .done-note{text-align:center;font-size:12px;color:var(--g400)}
 .submitting-step{font-size:13px;color:var(--g400);padding:3px 0}.submitting-step.done{color:var(--g500)}.submitting-step.active{color:var(--blue)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.contact-pref{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 16px}
+.cp-btn{padding:14px 8px;border:2px solid var(--g200);border-radius:12px;background:#fff;cursor:pointer;text-align:center;transition:all .15s;font-size:13px;font-weight:600;color:var(--g600);line-height:1.5;width:100%}
+.cp-btn:hover{border-color:var(--blue);background:var(--blue-lt)}
+.cp-btn.sel{border-color:var(--blue);background:var(--blue-lt);color:#1e40af}
+.cp-btn-icon{font-size:18px;display:block;margin-bottom:4px}
+.next-or{text-align:center;font-size:12px;color:var(--g400);margin:8px 0}
+.reach-box{background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:14px;text-align:center;margin-bottom:14px}
 @media(max-width:480px){.card{padding:20px}.two-col{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -223,7 +230,7 @@ const JOB_LOCS=[
 ];
 // ── State ────────────────────────────────────────────────────────────────────
 // shuffledOpts[i] holds the randomised option order for question i, set once on first render
-let S={step:'welcome',qi:0,contact:{},answers:[],profile:{},nearestJob:null,shuffledOpts:{}};
+let S={step:'welcome',qi:0,contact:{},answers:[],profile:{},nearestJob:null,shuffledOpts:{},contactPref:null};
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function rad(d){return d*Math.PI/180}
@@ -261,16 +268,16 @@ function renderWelcome(){
   document.getElementById('qcount').style.display='none';
   return`<div class="fi" style="text-align:center">
     <div class="welcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
-    <h1>Join Our Team of Insurance Professionals</h1>
-    <p class="desc">Take our <strong>2-minute readiness assessment</strong> to find out if you're a great fit for an Insurance Sales Agent career with Comparion Insurance.</p>
+    <h1>Interested in a Career with Comparion?</h1>
+    <p class="desc">Find out if you're a great fit for an Insurance Sales Agent role <strong>in as little as 3 minutes.</strong></p>
     <ul class="checklist">
-      <li>10 multiple-choice questions</li>
+      <li>10 quick multiple-choice questions</li>
       <li>Instant AI-powered match decision</li>
       <li>See the nearest open position near you</li>
-      <li>Qualified candidates get an immediate interview invitation</li>
+      <li>Qualified candidates receive an immediate interview invitation</li>
     </ul>
-    <button class="btn btn-blue" onclick="set({step:'contact'})">Start My Assessment →</button>
-    <p class="hint">Takes about 2 minutes · No account required</p>
+    <button class="btn btn-blue" onclick="set({step:'contact'})">Find Out If I'm a Fit →</button>
+    <p class="hint">Takes about 3 minutes · No account required</p>
   </div>`
 }
 
@@ -470,16 +477,75 @@ function finishEval(){
   set({step:'result',score,ai,job});
 }
 
+function selectPref(pref){
+  S.contactPref=pref;
+  render();
+}
+
 function renderResult(){
   const{score,job,contact}=S;
   const p=score.passed;
   const name=contact.firstName||'there';
-  return`<div class="fi">
-    <div class="res-header ${p?'pass':'fail'}">
-      <div class="res-icon ${p?'pass':'fail'}">${p?svgCheck():svgInfo()}</div>
-      <div class="res-title ${p?'pass':'fail'}">${p?`Great news, ${name}!`:`Thanks for applying, ${name}!`}</div>
-      <div class="res-sub ${p?'pass':'fail'}">${p?"You're a strong match for our Insurance Sales Agent role. Our recruiting team will be in touch shortly to schedule your interview.":'Based on your responses, this role may not be the right fit at this time. We appreciate your interest and encourage you to check back as our needs evolve.'}</div>
-      ${p?`<p style="font-size:12px;color:#15803d;margin-top:10px;font-weight:600">✉ An interview invitation has been sent to your email.</p>`:''}
+  const pref=S.contactPref;
+  const prefLabel=pref==='email'?'email':pref==='call'?'phone call':pref==='text'?'text message':null;
+
+  if(p){
+    return`<div class="fi">
+    <!-- Celebratory pass header -->
+    <div class="res-header pass" style="padding:28px 24px 24px">
+      <div class="res-icon pass" style="width:72px;height:72px;margin-bottom:14px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="width:36px;height:36px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div style="font-size:24px;font-weight:800;color:#166534;line-height:1.25;margin-bottom:10px">You Look to Be a Great Fit, ${name}!</div>
+      <div class="res-sub pass" style="font-size:14px">You matched well for our Insurance Sales Agent role. Our recruiting team will be in touch shortly.</div>
+      <p style="font-size:12px;color:#15803d;margin-top:10px;font-weight:600">✉ An interview invitation has been sent to your email.</p>
+    </div>
+
+    <!-- Contact preference -->
+    <div style="margin-bottom:4px">
+      <p style="font-size:14px;font-weight:600;color:var(--g800);margin-bottom:2px">How would you prefer we contact you?</p>
+      <p style="font-size:12px;color:var(--g500);margin-bottom:0">Our recruiting team will follow up soon — choose your preference:</p>
+      <div class="contact-pref">
+        <button class="cp-btn${pref==='email'?' sel':''}" onclick="selectPref('email')">
+          <span class="cp-btn-icon">✉</span>Email
+        </button>
+        <button class="cp-btn${pref==='call'?' sel':''}" onclick="selectPref('call')">
+          <span class="cp-btn-icon">&#128222;</span>Phone Call
+        </button>
+        <button class="cp-btn${pref==='text'?' sel':''}" onclick="selectPref('text')">
+          <span class="cp-btn-icon">&#128172;</span>Text Message
+        </button>
+      </div>
+    </div>
+
+    <!-- Nearest job -->
+    <div class="job-box">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span style="font-size:13px;font-weight:600;color:#1e3a8a">Nearest Open Position</span>
+      </div>
+      <div class="job-title">Insurance Sales Agent</div>
+      <div class="job-meta">${job.office} — ${job.city}, ${job.state}</div>
+      ${job.miles?`<div class="job-dist">~${job.miles} miles from your location</div>`:''}
+    </div>
+
+    <!-- Next steps -->
+    <p style="font-size:13px;font-weight:600;color:var(--g700);text-align:center;margin-bottom:10px">What would you like to do next?</p>
+    <a class="apply-btn" href="https://www.comparioninsurance.com/careers" target="_blank" rel="noopener">Apply to the Role Near You →</a>
+    <p class="next-or">— or —</p>
+    <div class="reach-box">
+      <p style="font-size:13px;font-weight:600;color:var(--g700)">Be on the lookout for a call from Comparion directly.</p>
+      <p style="font-size:12px;color:var(--g500);margin-top:5px">${prefLabel?`Our team will reach out by <strong>${prefLabel}</strong>.`:'Select your contact preference above so we know how to reach you.'}</p>
+    </div>
+
+    <p class="done-note">Your results have been shared with our recruiting team. We\'ll be in touch soon.</p>
+  </div>`
+  } else {
+    return`<div class="fi">
+    <div class="res-header fail">
+      <div class="res-icon fail">${svgInfo()}</div>
+      <div class="res-title fail">Thanks for applying, ${name}!</div>
+      <div class="res-sub fail">Based on your responses, this role may not be the right fit at this time. We appreciate your interest and encourage you to check back as our needs evolve.</div>
     </div>
 
     <div class="job-box">
@@ -493,9 +559,9 @@ function renderResult(){
       <a class="job-link" href="https://www.comparioninsurance.com/careers" target="_blank" rel="noopener">View Full Job Posting →</a>
     </div>
 
-    ${p?`<a class="apply-btn" href="https://www.comparioninsurance.com/careers" target="_blank" rel="noopener">Apply Now at Comparion Insurance →</a>`:''}
     <p class="done-note">Your results have been shared with our recruiting team.</p>
   </div>`
+  }
 }
 
 // ── Main render ───────────────────────────────────────────────────────────────

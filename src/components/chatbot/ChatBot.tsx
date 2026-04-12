@@ -228,25 +228,25 @@ export function ChatBot({ campaignSource, previewMode = false }: ChatBotProps) {
                   </svg>
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900 mb-3">
-                  Join Our Team of Insurance Professionals
+                  Interested in a Career with Comparion?
                 </h1>
                 <p className="text-gray-600 mb-2 text-sm leading-relaxed">
-                  Take our <strong>2-minute readiness assessment</strong> to find out if you're a great fit for a career as an Insurance Sales Agent with Comparion Insurance.
+                  Find out if you&apos;re a great fit for an Insurance Sales Agent role <strong>in as little as 3 minutes.</strong>
                 </p>
                 <ul className="text-left text-sm text-gray-600 space-y-2 mb-6 bg-gray-50 rounded-xl p-4">
-                  <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> 10 multiple-choice questions</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> 10 quick multiple-choice questions</li>
                   <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> Instant AI-powered match decision</li>
                   <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> See the nearest open position near you</li>
-                  <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> Qualified candidates get an immediate interview invitation</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> Qualified candidates receive an immediate interview invitation</li>
                 </ul>
                 <button
                   onClick={() => setStep({ type: 'contact' })}
                   className="w-full py-3.5 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-colors text-base"
                 >
-                  Start My Assessment →
+                  Find Out If I&apos;m a Fit →
                 </button>
                 <p className="mt-3 text-xs text-gray-400">
-                  Takes about 2 minutes · No account required
+                  Takes about 3 minutes · No account required
                 </p>
               </div>
             )}
