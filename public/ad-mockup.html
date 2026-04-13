@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparion — Ad & Embed Mockups</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f1f5f9;min-height:100vh;padding:40px 24px}
+.page-title{text-align:center;font-size:13px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.page-sub{text-align:center;font-size:22px;font-weight:800;color:#0f172a;margin-bottom:4px}
+.page-hint{text-align:center;font-size:13px;color:#94a3b8;margin-bottom:44px}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;max-width:1200px;margin:0 auto}
+.col{display:flex;flex-direction:column;gap:10px}
+.col-label{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.mockup-wrap{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.mockup-label{font-size:12px;font-weight:600;color:#64748b;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.platform-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* ─── LinkedIn Ad ─── */
+.li-card{border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.li-header{padding:12px 14px;display:flex;align-items:center;gap:10px}
+.li-avatar{width:40px;height:40px;border-radius:8px;background:#2563eb;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.li-avatar svg{width:22px;height:22px;stroke:#fff;fill:none}
+.li-name{font-size:13px;font-weight:600;color:#0f172a;line-height:1.2}
+.li-sponsored{font-size:11px;color:#64748b}
+.li-globe{display:inline-block;margin-left:4px;font-size:10px}
+.li-body{padding:0 14px 12px;font-size:13px;color:#334155;line-height:1.55}
+.li-img{width:100%;height:160px;background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 55%,#60a5fa 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;position:relative;overflow:hidden}
+.li-img::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='0.05'%3E%3Ccircle cx='20' cy='20' r='10'/%3E%3C/g%3E%3C/svg%3E")}
+.li-img-headline{font-size:20px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px;position:relative}
+.li-img-sub{font-size:12px;color:#bfdbfe;position:relative}
+.li-img-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:11px;color:#fff;font-weight:600;margin-top:10px;position:relative;display:inline-block}
+.li-footer{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f1f5f9}
+.li-footer-url{font-size:11px;color:#64748b}
+.li-cta{background:#2563eb;color:#fff;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer}
+.li-reactions{padding:8px 14px 0;display:flex;align-items:center;gap:6px;font-size:11px;color:#64748b}
+.li-react-icons{display:flex}
+.li-react-icon{width:18px;height:18px;border-radius:50%;border:1.5px solid #fff;margin-right:-4px;font-size:11px;display:inline-flex;align-items:center;justify-content:center}
+
+/* ─── Facebook Ad ─── */
+.fb-card{border:1px solid #dde1e7;border-radius:8px;overflow:hidden;background:#fff;font-family:Helvetica,Arial,sans-serif}
+.fb-img{width:100%;height:170px;background:linear-gradient(160deg,#1e3a8a 0%,#2563eb 45%,#3b82f6 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;position:relative}
+.fb-img-eyebrow{font-size:11px;font-weight:700;color:#93c5fd;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fb-img-headline{font-size:22px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px}
+.fb-img-sub{font-size:12px;color:#bfdbfe;line-height:1.4}
+.fb-img-check{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border-radius:999px;padding:5px 14px;font-size:11px;font-weight:600;color:#fff;margin-top:12px}
+.fb-body{padding:10px 12px 12px;background:#f0f2f5}
+.fb-url{font-size:10px;color:#8a8d91;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px}
+.fb-footer{display:flex;align-items:center;justify-content:space-between}
+.fb-footer-text{flex:1}
+.fb-footer-title{font-size:13px;font-weight:700;color:#050505;line-height:1.3}
+.fb-footer-desc{font-size:12px;color:#606770;margin-top:1px}
+.fb-cta-btn{background:#e4e6eb;border:none;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:600;color:#050505;cursor:pointer;flex-shrink:0;margin-left:10px}
+.fb-reactions{padding:6px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #dde1e7;font-size:12px;color:#65676b}
+.fb-react-left{display:flex;align-items:center;gap:4px}
+</style>
+/* ─── Instagram Ad ─── */
+.ig-card{border:1px solid #dbdbdb;border-radius:4px;overflow:hidden;background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.ig-header{padding:10px 12px;display:flex;align-items:center;gap:8px}
+.ig-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);padding:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ig-avatar-inner{width:100%;height:100%;border-radius:50%;background:#2563eb;border:2px solid #fff;display:flex;align-items:center;justify-content:center}
+.ig-avatar-inner svg{width:14px;height:14px;stroke:#fff;fill:none}
+.ig-username{font-size:13px;font-weight:600;color:#0f172a}
+.ig-sponsored{font-size:11px;color:#737373}
+.ig-more{margin-left:auto;color:#262626;font-size:18px;font-weight:700;cursor:pointer}
+.ig-img{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 40%,#38bdf8 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;position:relative;overflow:hidden}
+.ig-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,rgba(0,0,0,.3))}
+.ig-big-stat{font-size:52px;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;position:relative}
+.ig-big-label{font-size:14px;font-weight:600;color:#bfdbfe;margin-bottom:20px;position:relative}
+.ig-tag{background:rgba(255,255,255,.2);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:6px 16px;font-size:13px;font-weight:700;color:#fff;position:relative}
+.ig-actions{padding:8px 12px 4px;display:flex;align-items:center;gap:14px}
+.ig-action svg{width:24px;height:24px;stroke:#262626;fill:none}
+.ig-likes{padding:0 12px;font-size:13px;font-weight:700;color:#262626}
+.ig-caption{padding:0 12px 8px;font-size:13px;color:#262626;line-height:1.4}
+.ig-caption strong{font-weight:700}
+.ig-learnmore{padding:6px 12px 10px;border-top:1px solid #efefef}
+.ig-learnmore-btn{width:100%;background:#f0f2f5;border:none;border-radius:4px;padding:8px;font-size:13px;font-weight:600;color:#262626;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.ig-learnmore-btn svg{width:14px;height:14px;stroke:#262626;fill:none}
+
+/* ─── Widget mockup ─── */
+.browser-frame{border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#f8fafc;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.browser-bar{background:#f1f5f9;padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e2e8f0}
+.browser-dots{display:flex;gap:5px}
+.browser-dot{width:10px;height:10px;border-radius:50%}
+.browser-url{flex:1;background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:4px 10px;font-size:11px;color:#94a3b8;margin:0 8px}
+.browser-body{background:#fff;min-height:220px;position:relative;overflow:hidden}
+.site-preview{padding:20px;background:linear-gradient(135deg,#1e3a8a,#2563eb);min-height:100px;display:flex;flex-direction:column;justify-content:center}
+.site-preview-headline{font-size:15px;font-weight:800;color:#fff;margin-bottom:6px}
+.site-preview-sub{font-size:11px;color:#bfdbfe}
+.site-body-preview{padding:14px;background:#fff}
+.site-body-text{height:8px;background:#f1f5f9;border-radius:4px;margin-bottom:7px}
+.site-body-text:last-child{width:60%}
+/* Widget */
+.widget-preview{position:absolute;bottom:10px;right:10px;width:260px;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(37,99,235,.25),0 2px 8px rgba(0,0,0,.15)}
+.widget-top{background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.widget-av{width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.widget-av svg{width:14px;height:14px;stroke:#fff;fill:none}
+.widget-info{flex:1}
+.widget-name{font-size:11px;font-weight:700;color:#fff}
+.widget-status{font-size:10px;color:#6ee7b7;display:flex;align-items:center;gap:3px}
+.widget-status::before{content:'';width:5px;height:5px;background:#10b981;border-radius:50%;display:inline-block}
+.widget-close-x{color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;padding:2px 4px}
+.widget-chat{background:#f8fafc;padding:10px}
+.bubble-left{background:#fff;border:1px solid #e2e8f0;border-radius:12px 12px 12px 4px;padding:8px 10px;font-size:10px;color:#374151;line-height:1.4;margin-bottom:7px;max-width:85%;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.bubble-left .b-name{font-size:9px;font-weight:700;color:#2563eb;margin-bottom:3px}
+.widget-options{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+.widget-opt{background:#fff;border:1.5px solid #dbeafe;border-radius:8px;padding:6px 9px;font-size:10px;font-weight:600;color:#1e40af;cursor:pointer;display:flex;align-items:center;gap:5px}
+.widget-opt::before{content:'→';color:#2563eb;font-size:10px}
+/* Bubble button */
+.widget-bubble-btn{position:absolute;bottom:10px;right:10px;width:44px;height:44px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(37,99,235,.45);cursor:pointer}
+.widget-bubble-btn svg{width:22px;height:22px;stroke:#fff;fill:none}
+.widget-bubble-pulse{position:absolute;top:1px;right:1px;width:13px;height:13px;background:#10b981;border-radius:50%;border:2px solid #fff}
+.closed-state{display:none}
+.toggle-hint{text-align:center;font-size:11px;color:#94a3b8;margin-top:8px}
+
+/* ─── SMS preview ─── */
+.phone-frame{background:#1c1c1e;border-radius:28px;padding:8px;box-shadow:0 8px 32px rgba(0,0,0,.25);max-width:200px;margin:0 auto}
+.phone-notch{background:#000;height:24px;border-radius:20px 20px 0 0;display:flex;align-items:center;justify-content:center;margin-bottom:2px}
+.phone-notch::after{content:'';width:60px;height:12px;background:#1c1c1e;border-radius:999px}
+.phone-screen{background:#fff;border-radius:16px;overflow:hidden}
+.sms-header{background:#f2f2f7;padding:8px 12px;text-align:center;font-size:10px;font-weight:600;color:#3c3c43;border-bottom:1px solid #e5e5ea}
+.sms-body{padding:10px 10px 12px}
+.sms-sender{font-size:9px;color:#8e8e93;text-align:center;margin-bottom:8px}
+.sms-bubble{background:#007aff;border-radius:14px 14px 4px 14px;padding:8px 10px;font-size:10px;color:#fff;line-height:1.4;margin-bottom:6px}
+.sms-link{display:block;background:#f2f2f7;border-radius:10px;overflow:hidden;margin-top:6px;border:1px solid #e5e5ea}
+.sms-link-img{height:50px;background:linear-gradient(135deg,#1e3a8a,#2563eb);display:flex;align-items:center;justify-content:center}
+.sms-link-img svg{width:20px;height:20px;stroke:#fff;fill:none}
+.sms-link-body{padding:6px 8px}
+.sms-link-title{font-size:9px;font-weight:700;color:#0f172a}
+.sms-link-url{font-size:8px;color:#8e8e93;margin-top:1px}
+.phone-home{background:#f2f2f7;height:20px;border-radius:0 0 16px 16px;display:flex;align-items:center;justify-content:center}
+.phone-home::after{content:'';width:50px;height:4px;background:#1c1c1e;border-radius:999px;opacity:.3}
+@media(max-width:900px){.grid{grid-template-columns:1fr;max-width:500px}}
+</style>
+</head>
+<body>
+<div class="page-title">Comparion Insurance — Recruitment Campaign</div>
+<div class="page-sub">Ad & Embed Mockups</div>
+<div class="page-hint">Screenshot any card below to use in presentations or share with your team</div>
+
+<div class="grid">
+
+  <!-- ── Column 1: LinkedIn + Facebook ── -->
+  <div class="col">
+    <div class="col-label"><span class="platform-dot" style="background:#0077b5"></span> LinkedIn Sponsored Post</div>
+    <div class="mockup-wrap" style="padding:0;overflow:hidden">
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar"><svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+          <div>
+            <div class="li-name">Comparion Insurance Agency</div>
+            <div class="li-sponsored">Sponsored · <span class="li-globe">🌐</span> Anyone</div>
+          </div>
+        </div>
+        <div class="li-body">Interested in a career in insurance sales? Find out if you're a great fit in just 3 minutes — no resume required to start.</div>
+        <div class="li-img">
+          <div class="li-img-headline">Are You a Great Fit for Insurance Sales?</div>
+          <div class="li-img-sub">AI-powered assessment · Instant decision · Interview in 48hrs</div>
+          <div class="li-img-badge">✓ Takes 3 minutes · No account needed</div>
+        </div>
+        <div class="li-reactions">
+          <div class="li-react-icons">
+            <div class="li-react-icon" style="background:#2563eb">👍</div>
+            <div class="li-react-icon" style="background:#dc2626">❤️</div>
+            <div class="li-react-icon" style="background:#f59e0b">💡</div>
+          </div>
+          <span style="margin-left:8px;font-size:11px;color:#64748b">247 reactions · 38 comments</span>
+        </div>
+        <div class="li-footer">
+          <div class="li-footer-url">comparioninsurance.com/chatbot</div>
+          <button class="li-cta">Apply Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-label" style="margin-top:16px"><span class="platform-dot" style="background:#1877f2"></span> Facebook Sponsored Ad</div>
+    <div class="mockup-wrap" style="padding:0;overflow:hidden">
+      <div class="fb-card">
+        <div style="padding:10px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f0f0f0">
+          <div style="width:36px;height:36px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#050505">Comparion Insurance</div>
+            <div style="font-size:11px;color:#65676b">Sponsored · <span style="font-size:11px">🌐</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px 8px;font-size:13px;color:#050505;line-height:1.5">Thinking about a career change? Our 3-minute AI assessment tells you instantly if insurance sales is the right move for you.</div>
+        <div class="fb-img">
+          <div class="fb-img-eyebrow">Now Hiring · Insurance Sales Agents</div>
+          <div class="fb-img-headline">Find Out If You're a Fit in 3 Minutes</div>
+          <div class="fb-img-sub">Instant AI decision · Local office near you · Interview within 48 hours</div>
+          <div class="fb-img-check">✓ Qualified candidates heard back same day</div>
+        </div>
+        <div class="fb-body">
+          <div class="fb-url">comparioninsurance.com</div>
+          <div class="fb-footer">
+            <div class="fb-footer-text">
+              <div class="fb-footer-title">Insurance Sales Agent — Career Assessment</div>
+              <div class="fb-footer-desc">Take the 3-minute readiness check. Get an instant answer.</div>
+            </div>
+            <button class="fb-cta-btn">Apply Now</button>
+          </div>
+        </div>
+        <div class="fb-reactions">
+          <div class="fb-react-left">👍 ❤️ 😮 <span style="margin-left:6px">312</span></div>
+          <div>48 comments · 91 shares</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Column 2: Instagram + SMS ── -->
+  <div class="col">
+    <div class="col-label"><span class="platform-dot" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);width:8px;height:8px;border-radius:50%;display:inline-block"></span> Instagram Sponsored</div>
+    <div class="mockup-wrap" style="padding:0;overflow:hidden">
+      <div class="ig-card">
+        <div class="ig-header">
+          <div class="ig-avatar"><div class="ig-avatar-inner"><svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div></div>
+          <div><div class="ig-username">comparioninsurance</div><div class="ig-sponsored">Sponsored</div></div>
+          <div class="ig-more">···</div>
+        </div>
+        <div class="ig-img">
+          <div class="ig-big-stat">3 min</div>
+          <div class="ig-big-label">to find out if insurance sales is right for you</div>
+          <div class="ig-tag">Check Your Fit — It's Free →</div>
+        </div>
+        <div class="ig-actions">
+          <div class="ig-action"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
+          <div class="ig-action"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
+          <div class="ig-action"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg></div>
+        </div>
+        <div class="ig-likes">1,284 likes</div>
+        <div class="ig-caption"><strong>comparioninsurance</strong> Interested in a career in insurance? Our AI assessment takes 3 minutes and gives you an instant answer. Link in bio. <span style="color:#2563eb">#InsuranceCareers #SalesJobs #Hiring</span></div>
+        <div class="ig-learnmore"><button class="ig-learnmore-btn"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Learn More</button></div>
+      </div>
+    </div>
+
+    <div class="col-label" style="margin-top:16px"><span class="platform-dot" style="background:#34c759"></span> SMS / Text Campaign</div>
+    <div class="mockup-wrap">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sms-header">Messages</div>
+          <div class="sms-body">
+            <div class="sms-sender">Comparion Insurance · Today 9:41 AM</div>
+            <div class="sms-bubble">
+              Hi! Comparion Insurance is hiring Sales Agents near you. Find out if you're a fit in 3 minutes — no resume required:
+              <div class="sms-link">
+                <div class="sms-link-img"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+                <div class="sms-link-body">
+                  <div class="sms-link-title">Are You a Great Fit? — Check in 3 Min</div>
+                  <div class="sms-link-url">comparioninsurance.com/chatbot?source=sms</div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:9px;color:#8e8e93;margin-top:4px;text-align:right">Delivered</div>
+          </div>
+        </div>
+        <div class="phone-home"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Column 3: Embedded widget ── -->
+  <div class="col">
+    <div class="col-label">
+      <span class="platform-dot" style="background:#2563eb"></span> Website Embed — Widget Open
+    </div>
+    <div class="mockup-wrap" style="padding:0;overflow:hidden">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <div class="browser-dot" style="background:#ff5f57"></div>
+            <div class="browser-dot" style="background:#ffbd2e"></div>
+            <div class="browser-dot" style="background:#28c840"></div>
+          </div>
+          <div class="browser-url">comparioninsurance.com/careers</div>
+        </div>
+        <div class="browser-body">
+          <div class="site-preview">
+            <div class="site-preview-headline">Build a Career in Insurance Sales</div>
+            <div class="site-preview-sub">Join a team of 500+ agents nationwide</div>
+          </div>
+          <div class="site-body-preview">
+            <div class="site-body-text"></div>
+            <div class="site-body-text"></div>
+            <div class="site-body-text"></div>
+          </div>
+          <!-- Widget open state -->
+          <div class="widget-preview">
+            <div class="widget-top">
+              <div class="widget-av"><svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+              <div class="widget-info">
+                <div class="widget-name">Comparion Insurance</div>
+                <div class="widget-status">Recruiting Team · Online</div>
+              </div>
+              <div class="widget-close-x">✕</div>
+            </div>
+            <div class="widget-chat">
+              <div class="bubble-left">
+                <div class="b-name">Comparion Recruiting</div>
+                Interested in a career with us? Find out if you're a great fit in as little as 3 minutes.
+              </div>
+              <div class="widget-options">
+                <div class="widget-opt">Start My Assessment</div>
+                <div class="widget-opt">Learn About the Role</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-label" style="margin-top:16px">
+      <span class="platform-dot" style="background:#2563eb"></span> Website Embed — Widget Closed
+    </div>
+    <div class="mockup-wrap" style="padding:0;overflow:hidden">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <div class="browser-dot" style="background:#ff5f57"></div>
+            <div class="browser-dot" style="background:#ffbd2e"></div>
+            <div class="browser-dot" style="background:#28c840"></div>
+          </div>
+          <div class="browser-url">comparioninsurance.com/careers</div>
+        </div>
+        <div class="browser-body">
+          <div class="site-preview">
+            <div class="site-preview-headline">Build a Career in Insurance Sales</div>
+            <div class="site-preview-sub">Join a team of 500+ agents nationwide</div>
+          </div>
+          <div class="site-body-preview">
+            <div class="site-body-text"></div>
+            <div class="site-body-text"></div>
+            <div class="site-body-text"></div>
+          </div>
+          <!-- Bubble closed state -->
+          <div class="widget-bubble-btn">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            <div class="widget-bubble-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toggle-hint" style="font-size:11px;color:#94a3b8;text-align:center;margin-top:6px">The bubble sits in the bottom-right corner of any page and opens the assessment when clicked</div>
+  </div>
+
+</div><!-- /grid -->
+
+<div style="text-align:center;margin-top:40px;font-size:12px;color:#94a3b8;padding-bottom:40px">
+  © 2026 Comparion Insurance Agency · Preview mockup — not for distribution
+</div>
+</body>
+</html>
