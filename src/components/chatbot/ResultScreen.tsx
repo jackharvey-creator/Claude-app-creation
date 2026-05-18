@@ -139,6 +139,9 @@ export function ResultScreen({
         <p className="text-center text-xs text-gray-400">
           Your results have been shared with our recruiting team. We&apos;ll be in touch soon.
         </p>
+        <p className="text-xs text-gray-400 border-t border-gray-100 pt-4 leading-relaxed">
+          <strong className="text-gray-500">Disclaimer:</strong> This assessment is a matching tool only and does not constitute an offer of employment. Completing this assessment does not guarantee a job offer or interview. Qualifying responses are matched with open positions that candidates may choose to apply for.
+        </p>
       </div>
     )
   }
@@ -231,6 +234,9 @@ export function ResultScreen({
 
       <p className="text-center text-xs text-gray-400">
         Your results have been shared with our recruiting team. We&apos;ll be in touch soon.
+      </p>
+      <p className="text-xs text-gray-400 border-t border-gray-100 pt-4 leading-relaxed">
+        <strong className="text-gray-500">Disclaimer:</strong> This assessment is a matching tool only and does not constitute an offer of employment. Completing this assessment does not guarantee a job offer or interview. Qualifying responses are matched with open positions that candidates may choose to apply for.
       </p>
     </div>
   )

@@ -248,6 +248,9 @@ export function ChatBot({ campaignSource, previewMode = false }: ChatBotProps) {
                 <p className="mt-3 text-xs text-gray-400">
                   Takes about 3 minutes · No account required
                 </p>
+                <p className="mt-4 text-xs text-gray-400 border-t border-gray-100 pt-4 leading-relaxed">
+                  <strong className="text-gray-500">Disclaimer:</strong> This assessment is a matching tool only and does not constitute an offer of employment. Completing this assessment does not guarantee a job offer or interview. Qualifying responses will be matched with open positions that candidates may choose to apply for.
+                </p>
               </div>
             )}
 
