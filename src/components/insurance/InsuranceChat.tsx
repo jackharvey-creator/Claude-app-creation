@@ -20,7 +20,7 @@ function uid() {
   return `msg-${++msgCounter}`
 }
 
-export function InsuranceChat({ agent }: { agent: Agent }) {
+export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?: () => void }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [step, setStep] = useState<FlowStep>('greeting')
   const [lead, setLead] = useState<LeadData>({})
@@ -102,6 +102,7 @@ export function InsuranceChat({ agent }: { agent: Agent }) {
     const next = nextStep(fromStep)
     setStep(next)
     await addBotMessages(next, currentLead)
+    if (next === 'confirmed') onComplete?.()
   }
 
   function handleOptionSelect(value: string, label: string, msgStepKey: FlowStep, msgId: string) {
