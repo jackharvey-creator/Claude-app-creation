@@ -52,7 +52,7 @@ export function ResultScreen({
         {passed ? (
           <>
             <h2 className="text-2xl font-bold text-green-800">Great news, {firstName}!</h2>
-            <p className="mt-2 text-green-700">You're a strong match for our Insurance Sales Agent role.</p>
+            <p className="mt-2 text-green-700">You&apos;re a strong match for our Insurance Sales Agent role.</p>
             <p className="mt-1 text-sm text-green-600">
               An interview invitation has been sent to your email.
             </p>
@@ -161,7 +161,7 @@ export function ResultScreen({
       )}
 
       <p className="text-center text-xs text-gray-400">
-        Your results have been shared with our recruiting team. We'll be in touch soon.
+        Your results have been shared with our recruiting team. We&apos;ll be in touch soon.
       </p>
     </div>
   )

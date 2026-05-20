@@ -54,7 +54,7 @@ export function ContactStep({ onComplete }: ContactStepProps) {
   return (
     <div className="animate-fadeIn">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">Let's get started</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Let&apos;s get started</h2>
         <p className="mt-2 text-sm text-gray-500">
           Tell us a little about yourself before we begin the assessment.
         </p>

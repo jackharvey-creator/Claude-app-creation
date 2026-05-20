@@ -231,7 +231,7 @@ export function ChatBot({ campaignSource, previewMode = false }: ChatBotProps) {
                   Join Our Team of Insurance Professionals
                 </h1>
                 <p className="text-gray-600 mb-2 text-sm leading-relaxed">
-                  Take our <strong>2-minute readiness assessment</strong> to find out if you're a great fit for a career as an Insurance Sales Agent with Comparion Insurance.
+                  Take our <strong>2-minute readiness assessment</strong> to find out if you&apos;re a great fit for a career as an Insurance Sales Agent with Comparion Insurance.
                 </p>
                 <ul className="text-left text-sm text-gray-600 space-y-2 mb-6 bg-gray-50 rounded-xl p-4">
                   <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> 10 multiple-choice questions</li>
