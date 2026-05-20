@@ -12,7 +12,6 @@ import {
   nextStep,
 } from '@/lib/insurance/chatFlow'
 import { AgentHeader } from './AgentHeader'
-import { CanopyConnectCard } from './CanopyConnectCard'
 import { ChatMessage, TypingIndicator } from './ChatMessage'
 
 let msgCounter = 0
@@ -28,9 +27,7 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
   const [inputDisabled, setInputDisabled] = useState(true)
   const [textInput, setTextInput] = useState('')
   const [activeInputType, setActiveInputType] = useState<'text' | 'phone' | 'email' | 'none'>('none')
-  const [showCanopy, setShowCanopy] = useState(false)
   const [leadSubmitted, setLeadSubmitted] = useState(false)
-  // Tracks which message IDs have had an option selected (to disable their buttons)
   const [selectedMessages, setSelectedMessages] = useState<Set<string>>(new Set())
 
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -38,22 +35,15 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
   const stepRef = useRef<FlowStep>('greeting')
   const didInit = useRef(false)
 
-  // Keep stepRef in sync so callbacks always read current step
-  useEffect(() => {
-    stepRef.current = step
-  }, [step])
+  useEffect(() => { stepRef.current = step }, [step])
 
-  // Auto-scroll to bottom whenever messages, typing indicator, or canopy card changes
   useEffect(() => {
     const el = scrollRef.current
     if (el) el.scrollTop = el.scrollHeight
-  }, [messages, isTyping, showCanopy])
+  }, [messages, isTyping])
 
-  // Focus input when it becomes active
   useEffect(() => {
-    if (!inputDisabled && activeInputType !== 'none') {
-      inputRef.current?.focus()
-    }
+    if (!inputDisabled && activeInputType !== 'none') inputRef.current?.focus()
   }, [inputDisabled, activeInputType])
 
   const addBotMessages = useCallback(
@@ -65,36 +55,24 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
         await new Promise((r) => setTimeout(r, 850 + Math.random() * 350))
         setIsTyping(false)
         setMessages((prev) => [...prev, { ...newMsgs[i], id: uid() } as Message])
-        if (i < newMsgs.length - 1) {
-          await new Promise((r) => setTimeout(r, 350))
-        }
+        if (i < newMsgs.length - 1) await new Promise((r) => setTimeout(r, 350))
       }
 
-      if (s === 'canopy_connect') {
-        await new Promise((r) => setTimeout(r, 250))
-        setShowCanopy(true)
-        setInputDisabled(true)
-        setActiveInputType('none')
-      } else {
-        setActiveInputType(inputType)
-        setInputDisabled(inputType === 'none')
-      }
+      setActiveInputType(inputType)
+      setInputDisabled(inputType === 'none')
     },
     [agent.firstName],
   )
 
-  // Kick off the greeting sequence on mount
   useEffect(() => {
     if (didInit.current) return
     didInit.current = true
-
     async function runGreeting() {
       await new Promise((r) => setTimeout(r, 600))
       await addBotMessages('greeting', {})
       await new Promise((r) => setTimeout(r, 250))
       await addBotMessages('greeting_2', {})
     }
-
     runGreeting()
   }, [addBotMessages])
 
@@ -102,20 +80,40 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
     const next = nextStep(fromStep)
     setStep(next)
     await addBotMessages(next, currentLead)
+
+    // canopy_connect auto-advances — no user action required
+    if (next === 'canopy_connect') {
+      // Brief pause to let the message land, then show "sending" status
+      await new Promise((r) => setTimeout(r, 900))
+      setIsTyping(true)
+      await new Promise((r) => setTimeout(r, 1100))
+      setIsTyping(false)
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: uid(),
+          role: 'bot' as const,
+          content: '✓ Canopy Connect request sent.',
+          type: 'text' as const,
+          stepKey: 'canopy_connect' as FlowStep,
+        },
+      ])
+      await new Promise((r) => setTimeout(r, 500))
+      submitLead(currentLead)
+      setStep('confirmed')
+      await addBotMessages('confirmed', currentLead)
+      onComplete?.()
+      return
+    }
+
     if (next === 'confirmed') onComplete?.()
   }
 
   function handleOptionSelect(value: string, label: string, msgStepKey: FlowStep, msgId: string) {
-    // Disable options on this message immediately
     setSelectedMessages((prev) => new Set([...prev, msgId]))
-
-    setMessages((prev) => [
-      ...prev,
-      { id: uid(), role: 'user', content: label, type: 'text' },
-    ])
+    setMessages((prev) => [...prev, { id: uid(), role: 'user', content: label, type: 'text' }])
 
     let updatedLead = { ...lead }
-
     switch (msgStepKey) {
       case 'ask_coverage':
         updatedLead = { ...updatedLead, coverageType: value as CoverageType }
@@ -138,16 +136,12 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
     if (!val || inputDisabled) return
 
     const currentStep = stepRef.current
-    setMessages((prev) => [
-      ...prev,
-      { id: uid(), role: 'user', content: val, type: 'text' },
-    ])
+    setMessages((prev) => [...prev, { id: uid(), role: 'user', content: val, type: 'text' }])
     setTextInput('')
     setInputDisabled(true)
     setActiveInputType('none')
 
     let updatedLead = { ...lead }
-
     switch (currentStep) {
       case 'ask_name':
         updatedLead = { ...updatedLead, firstName: val }
@@ -164,35 +158,6 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
     advanceFlow(currentStep, updatedLead)
   }
 
-  function handleCanopyConnect() {
-    const updatedLead = { ...lead, canopyConnectClicked: true }
-    setLead(updatedLead)
-    setShowCanopy(false)
-    setMessages((prev) => [
-      ...prev,
-      { id: uid(), role: 'user', content: 'I shared my insurance info via Canopy Connect.', type: 'text' },
-    ])
-    submitLead(updatedLead)
-    advanceFlow('canopy_connect', updatedLead)
-  }
-
-  function handleCanopySkip() {
-    const updatedLead = { ...lead, canopyConnectClicked: false }
-    setLead(updatedLead)
-    setShowCanopy(false)
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: uid(),
-        role: 'user',
-        content: "I'll share details with my agent directly.",
-        type: 'text',
-      },
-    ])
-    submitLead(updatedLead)
-    advanceFlow('canopy_connect', updatedLead)
-  }
-
   async function submitLead(finalLead: LeadData) {
     if (leadSubmitted) return
     setLeadSubmitted(true)
@@ -203,16 +168,16 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
         body: JSON.stringify({ agentId: agent.id, lead: finalLead }),
       })
     } catch {
-      // silently fail — lead capture is best-effort on the client
+      // silently fail
     }
   }
 
   function getInputPlaceholder() {
-    const currentStep = stepRef.current
-    if (currentStep === 'ask_name') return 'Your first name…'
-    if (currentStep === 'ask_zip') return 'ZIP code…'
-    if (currentStep === 'capture_contact' && lead.contactPreference === 'email') return 'your@email.com'
-    if (currentStep === 'capture_contact') return '(555) 555-0100'
+    const s = stepRef.current
+    if (s === 'ask_name') return 'Your first name…'
+    if (s === 'ask_zip') return 'ZIP code…'
+    if (s === 'capture_contact' && lead.contactPreference === 'email') return 'your@email.com'
+    if (s === 'capture_contact') return '(555) 555-0100'
     return 'Type a message…'
   }
 
@@ -229,7 +194,6 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
     <div className="flex flex-col h-screen bg-[#0d1117]">
       <AgentHeader agent={agent} />
 
-      {/* Scrollable messages area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4">
         {messages.map((msg) => (
           <ChatMessage
@@ -241,22 +205,9 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
             optionsDisabled={selectedMessages.has(msg.id)}
           />
         ))}
-
         {isTyping && <TypingIndicator />}
-
-        {showCanopy && (
-          <div className="mt-2 mb-3">
-            <CanopyConnectCard
-              url={agent.canopyConnectUrl}
-              agentFirstName={agent.firstName}
-              onConnect={handleCanopyConnect}
-              onSkip={handleCanopySkip}
-            />
-          </div>
-        )}
       </div>
 
-      {/* Input bar */}
       <div className="border-t border-white/10 bg-[#0d1117] px-4 py-3">
         <div
           className={`flex items-center gap-3 bg-[#1a1f2e] rounded-2xl px-4 py-2.5 transition-opacity duration-200 ${

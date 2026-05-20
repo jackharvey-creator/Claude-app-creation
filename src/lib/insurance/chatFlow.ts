@@ -184,7 +184,7 @@ export function getBotMessages(
         messages: [
           {
             role: 'bot',
-            content: `One last thing — ${agentFirstName} can build you a much more accurate quote if they can see your current insurance details. There's a secure 10-second shortcut that pulls it automatically, so you don't have to dig out your policy or sit through a long phone interrogation.`,
+            content: `Almost done! To make sure ${agentFirstName} can build you the most accurate quote, we're automatically sending you a secure link to share your current policy details. It'll arrive ${lead.contactPreference === 'email' ? 'by email' : `via ${lead.contactPreference}`} in just a moment — takes about 10 seconds when you're ready and means no long phone interrogation later.`,
             type: 'text',
             stepKey: 'canopy_connect',
           },
@@ -197,7 +197,7 @@ export function getBotMessages(
         messages: [
           {
             role: 'bot',
-            content: `You're all set, ${lead.firstName}! ${agentFirstName} will reach out ${lead.contactPreference === 'email' ? 'by email' : `by ${lead.contactPreference}`} soon. They personally review every quote — no call centers, no bots. You're in good hands. 🤝`,
+            content: `You're all set, ${lead.firstName}! ${agentFirstName} will reach out ${lead.contactPreference === 'email' ? 'by email' : `by ${lead.contactPreference}`} soon with your personalized quote. Your Canopy Connect link is on its way — completing it means ${agentFirstName} arrives to that conversation already knowing your coverage and ready to save you money. You're in good hands. 🤝`,
             type: 'text',
             stepKey: 'confirmed',
           },
