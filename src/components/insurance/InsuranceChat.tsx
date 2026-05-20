@@ -191,7 +191,7 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
   const isInputActive = !inputDisabled && activeInputType !== 'none'
 
   return (
-    <div className="flex flex-col h-screen bg-[#0d1117]">
+    <div className="flex flex-col h-screen bg-[#F5F9FF]">
       <AgentHeader agent={agent} />
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4">
@@ -208,10 +208,10 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
         {isTyping && <TypingIndicator />}
       </div>
 
-      <div className="border-t border-white/10 bg-[#0d1117] px-4 py-3">
+      <div className="border-t border-blue-100 bg-white px-4 py-3">
         <div
-          className={`flex items-center gap-3 bg-[#1a1f2e] rounded-2xl px-4 py-2.5 transition-opacity duration-200 ${
-            isInputActive ? 'opacity-100' : 'opacity-30 pointer-events-none'
+          className={`flex items-center gap-3 bg-white border-2 rounded-2xl px-4 py-2.5 transition-all duration-200 ${
+            isInputActive ? 'border-[#005EB8] opacity-100' : 'border-gray-200 opacity-40 pointer-events-none'
           }`}
         >
           <input
@@ -223,19 +223,19 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
             onKeyDown={(e) => e.key === 'Enter' && handleTextSubmit()}
             placeholder={getInputPlaceholder()}
             disabled={!isInputActive}
-            className="flex-1 bg-transparent text-white placeholder-gray-600 text-sm outline-none"
+            className="flex-1 bg-transparent text-[#1A2B4A] placeholder-gray-400 text-sm outline-none"
           />
           <button
             onClick={handleTextSubmit}
             disabled={!textInput.trim() || !isInputActive}
-            className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center flex-shrink-0 disabled:opacity-30 active:scale-90 transition-all duration-150"
+            className="w-8 h-8 rounded-full bg-[#003087] flex items-center justify-center flex-shrink-0 disabled:opacity-30 active:scale-90 transition-all duration-150 hover:bg-[#005EB8]"
           >
-            <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
         </div>
-        <p className="text-center text-gray-700 text-xs mt-2">
+        <p className="text-center text-gray-400 text-xs mt-2">
           Secure · Your information is only shared with {agent.firstName}
         </p>
       </div>

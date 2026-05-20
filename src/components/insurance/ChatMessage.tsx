@@ -16,8 +16,8 @@ export function ChatMessage({ message, onOptionSelect, optionsDisabled }: ChatMe
         <div
           className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
             isBot
-              ? 'bg-[#1e2737] text-gray-100 rounded-tl-sm'
-              : 'bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-tr-sm shadow-lg shadow-amber-900/30'
+              ? 'bg-[#EBF4FF] text-[#1A2B4A] rounded-tl-sm border border-blue-100'
+              : 'bg-[#003087] text-white rounded-tr-sm shadow-md shadow-blue-200'
           }`}
         >
           {message.content}
@@ -37,8 +37,8 @@ export function ChatMessage({ message, onOptionSelect, optionsDisabled }: ChatMe
                 disabled={optionsDisabled}
                 className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-150 ${
                   optionsDisabled
-                    ? 'border-white/10 text-gray-600 cursor-default'
-                    : 'border-amber-500/60 text-amber-400 hover:bg-amber-500/10 active:bg-amber-500/20 cursor-pointer'
+                    ? 'border-gray-200 text-gray-400 cursor-default bg-gray-50'
+                    : 'border-[#005EB8] text-[#005EB8] bg-white hover:bg-[#005EB8] hover:text-white active:bg-[#003087] cursor-pointer'
                 }`}
               >
                 {opt.label}
@@ -54,20 +54,11 @@ export function ChatMessage({ message, onOptionSelect, optionsDisabled }: ChatMe
 export function TypingIndicator() {
   return (
     <div className="flex justify-start mb-3">
-      <div className="bg-[#1e2737] px-4 py-3 rounded-2xl rounded-tl-sm">
+      <div className="bg-[#EBF4FF] border border-blue-100 px-4 py-3 rounded-2xl rounded-tl-sm">
         <div className="flex items-center gap-1">
-          <span
-            className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
-            style={{ animationDelay: '0ms' }}
-          />
-          <span
-            className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
-            style={{ animationDelay: '150ms' }}
-          />
-          <span
-            className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
-            style={{ animationDelay: '300ms' }}
-          />
+          <span className="w-2 h-2 rounded-full bg-[#005EB8] animate-bounce" style={{ animationDelay: '0ms' }} />
+          <span className="w-2 h-2 rounded-full bg-[#005EB8] animate-bounce" style={{ animationDelay: '150ms' }} />
+          <span className="w-2 h-2 rounded-full bg-[#005EB8] animate-bounce" style={{ animationDelay: '300ms' }} />
         </div>
       </div>
     </div>
