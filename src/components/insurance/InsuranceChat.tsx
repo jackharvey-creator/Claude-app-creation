@@ -110,7 +110,7 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
   }
 
   function handleOptionSelect(value: string, label: string, msgStepKey: FlowStep, msgId: string) {
-    setSelectedMessages((prev) => new Set([...prev, msgId]))
+    setSelectedMessages((prev) => { const s = new Set(prev); s.add(msgId); return s })
     setMessages((prev) => [...prev, { id: uid(), role: 'user', content: label, type: 'text' }])
 
     let updatedLead = { ...lead }
