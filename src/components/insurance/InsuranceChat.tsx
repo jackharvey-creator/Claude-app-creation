@@ -5,6 +5,7 @@ import type { Agent } from '@/lib/insurance/agents'
 import {
   type ContactPref,
   type CoverageType,
+  type DocPreference,
   type FlowStep,
   type LeadData,
   type Message,
@@ -13,11 +14,10 @@ import {
 } from '@/lib/insurance/chatFlow'
 import { AgentHeader } from './AgentHeader'
 import { ChatMessage, TypingIndicator } from './ChatMessage'
+import { DecPageUpload } from './DecPageUpload'
 
 let msgCounter = 0
-function uid() {
-  return `msg-${++msgCounter}`
-}
+function uid() { return `msg-${++msgCounter}` }
 
 export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?: () => void }) {
   const [messages, setMessages] = useState<Message[]>([])
@@ -27,6 +27,7 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
   const [inputDisabled, setInputDisabled] = useState(true)
   const [textInput, setTextInput] = useState('')
   const [activeInputType, setActiveInputType] = useState<'text' | 'phone' | 'email' | 'none'>('none')
+  const [showDocUpload, setShowDocUpload] = useState(false)
   const [leadSubmitted, setLeadSubmitted] = useState(false)
   const [selectedMessages, setSelectedMessages] = useState<Set<string>>(new Set())
 
@@ -40,7 +41,7 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
   useEffect(() => {
     const el = scrollRef.current
     if (el) el.scrollTop = el.scrollHeight
-  }, [messages, isTyping])
+  }, [messages, isTyping, showDocUpload])
 
   useEffect(() => {
     if (!inputDisabled && activeInputType !== 'none') inputRef.current?.focus()
@@ -58,8 +59,15 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
         if (i < newMsgs.length - 1) await new Promise((r) => setTimeout(r, 350))
       }
 
-      setActiveInputType(inputType)
-      setInputDisabled(inputType === 'none')
+      if (s === 'upload_dec_page') {
+        await new Promise((r) => setTimeout(r, 200))
+        setShowDocUpload(true)
+        setInputDisabled(true)
+        setActiveInputType('none')
+      } else {
+        setActiveInputType(inputType)
+        setInputDisabled(inputType === 'none')
+      }
     },
     [agent.firstName],
   )
@@ -76,36 +84,31 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
     runGreeting()
   }, [addBotMessages])
 
+  // Extracted so both advanceFlow and handleDocSwitchToCanopy can call it
+  async function runCanopyAutoAdvance(currentLead: LeadData) {
+    await new Promise((r) => setTimeout(r, 900))
+    setIsTyping(true)
+    await new Promise((r) => setTimeout(r, 1100))
+    setIsTyping(false)
+    setMessages((prev) => [...prev, {
+      id: uid(), role: 'bot' as const, content: '✓ Canopy Connect request sent.', type: 'text' as const, stepKey: 'canopy_connect' as FlowStep,
+    }])
+    await new Promise((r) => setTimeout(r, 500))
+    submitLead(currentLead)
+    setStep('confirmed')
+    await addBotMessages('confirmed', currentLead)
+    onComplete?.()
+  }
+
   async function advanceFlow(fromStep: FlowStep, currentLead: LeadData) {
-    const next = nextStep(fromStep)
+    const next = nextStep(fromStep, currentLead)
     setStep(next)
     await addBotMessages(next, currentLead)
 
-    // canopy_connect auto-advances — no user action required
     if (next === 'canopy_connect') {
-      // Brief pause to let the message land, then show "sending" status
-      await new Promise((r) => setTimeout(r, 900))
-      setIsTyping(true)
-      await new Promise((r) => setTimeout(r, 1100))
-      setIsTyping(false)
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: uid(),
-          role: 'bot' as const,
-          content: '✓ Canopy Connect request sent.',
-          type: 'text' as const,
-          stepKey: 'canopy_connect' as FlowStep,
-        },
-      ])
-      await new Promise((r) => setTimeout(r, 500))
-      submitLead(currentLead)
-      setStep('confirmed')
-      await addBotMessages('confirmed', currentLead)
-      onComplete?.()
+      await runCanopyAutoAdvance(currentLead)
       return
     }
-
     if (next === 'confirmed') onComplete?.()
   }
 
@@ -123,6 +126,9 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
         break
       case 'ask_contact_pref':
         updatedLead = { ...updatedLead, contactPreference: value as ContactPref }
+        break
+      case 'ask_doc_preference':
+        updatedLead = { ...updatedLead, docPreference: value as DocPreference }
         break
     }
 
@@ -143,9 +149,16 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
 
     let updatedLead = { ...lead }
     switch (currentStep) {
-      case 'ask_name':
-        updatedLead = { ...updatedLead, firstName: val }
+      case 'ask_name': {
+        const parts = val.split(' ')
+        updatedLead = {
+          ...updatedLead,
+          fullName: val,
+          firstName: parts[0] || val,
+          lastName: parts.slice(1).join(' ') || '',
+        }
         break
+      }
       case 'ask_zip':
         updatedLead = { ...updatedLead, zipCode: val }
         break
@@ -158,6 +171,42 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
     advanceFlow(currentStep, updatedLead)
   }
 
+  async function handleDocUpload(file: File) {
+    setShowDocUpload(false)
+    setMessages((prev) => [...prev, {
+      id: uid(), role: 'user', content: `📄 ${file.name}`, type: 'text',
+    }])
+
+    const updatedLead = { ...lead, decPageFileName: file.name }
+    setLead(updatedLead)
+
+    // Upload file to API
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('agentId', agent.id)
+      formData.append('lead', JSON.stringify(updatedLead))
+      await fetch('/api/insurance/leads/upload', { method: 'POST', body: formData })
+    } catch { /* silently fail */ }
+
+    setLeadSubmitted(true)
+    setStep('confirmed')
+    await addBotMessages('confirmed', updatedLead)
+    onComplete?.()
+  }
+
+  async function handleDocSwitchToCanopy() {
+    setShowDocUpload(false)
+    setMessages((prev) => [...prev, {
+      id: uid(), role: 'user', content: "Send me the secure link instead.", type: 'text',
+    }])
+    const updatedLead = { ...lead, docPreference: 'canopy_connect' as DocPreference }
+    setLead(updatedLead)
+    setStep('canopy_connect')
+    await addBotMessages('canopy_connect', updatedLead)
+    await runCanopyAutoAdvance(updatedLead)
+  }
+
   async function submitLead(finalLead: LeadData) {
     if (leadSubmitted) return
     setLeadSubmitted(true)
@@ -167,14 +216,12 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ agentId: agent.id, lead: finalLead }),
       })
-    } catch {
-      // silently fail
-    }
+    } catch { /* silently fail */ }
   }
 
   function getInputPlaceholder() {
     const s = stepRef.current
-    if (s === 'ask_name') return 'Your first name…'
+    if (s === 'ask_name') return 'First and last name…'
     if (s === 'ask_zip') return 'ZIP code…'
     if (s === 'capture_contact' && lead.contactPreference === 'email') return 'your@email.com'
     if (s === 'capture_contact') return '(555) 555-0100'
@@ -206,14 +253,19 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
           />
         ))}
         {isTyping && <TypingIndicator />}
+        {showDocUpload && (
+          <DecPageUpload
+            agentFirstName={agent.firstName}
+            onUpload={handleDocUpload}
+            onSwitchToCanopy={handleDocSwitchToCanopy}
+          />
+        )}
       </div>
 
       <div className="border-t border-blue-100 bg-white px-4 py-3">
-        <div
-          className={`flex items-center gap-3 bg-white border-2 rounded-2xl px-4 py-2.5 transition-all duration-200 ${
-            isInputActive ? 'border-[#005EB8] opacity-100' : 'border-gray-200 opacity-40 pointer-events-none'
-          }`}
-        >
+        <div className={`flex items-center gap-3 bg-white border-2 rounded-2xl px-4 py-2.5 transition-all duration-200 ${
+          isInputActive ? 'border-[#005EB8] opacity-100' : 'border-gray-200 opacity-40 pointer-events-none'
+        }`}>
           <input
             ref={inputRef}
             type={activeInputType === 'email' ? 'email' : activeInputType === 'phone' ? 'tel' : 'text'}
