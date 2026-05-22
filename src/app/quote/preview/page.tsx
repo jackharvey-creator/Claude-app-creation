@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { AGENTS } from '@/lib/insurance/agents'
 import { InsuranceChat } from '@/components/insurance/InsuranceChat'
+import { StoryStrip } from '@/components/insurance/StoryStrip'
 
 const DEMO_AGENT = AGENTS['demo']
 
@@ -235,6 +236,11 @@ export default function QuotePreviewPage() {
                 <p className="text-gray-500 text-xs leading-snug mt-0.5">{f.label}</p>
               </div>
             ))}
+          </div>
+
+          {/* Story strip */}
+          <div className="mb-10">
+            <StoryStrip />
           </div>
 
           {/* Lead card — appears after demo completes */}
