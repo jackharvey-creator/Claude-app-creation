@@ -131,13 +131,111 @@ function AgentLeadCard() {
   )
 }
 
+function MockAdScreen({ onTap }: { onTap: () => void }) {
+  return (
+    <div className="flex flex-col h-full bg-[#FAFAFA] overflow-y-auto">
+      {/* App header */}
+      <div className="sticky top-0 bg-white border-b border-gray-100 px-4 py-2.5 flex items-center justify-between z-10">
+        <span className="text-lg font-black text-gray-900" style={{ fontFamily: 'Georgia, serif' }}>Instagram</span>
+        <div className="flex items-center gap-4">
+          <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Stories */}
+      <div className="bg-white border-b border-gray-100 py-3 px-3 flex gap-3">
+        {[
+          { name: 'Your story', add: true },
+          { name: 'mike_r', add: false },
+          { name: 'sarah.k', add: false },
+          { name: 'j_lee', add: false },
+        ].map((s, i) => (
+          <div key={i} className="flex flex-col items-center gap-1 flex-shrink-0">
+            <div className={`w-11 h-11 rounded-full flex items-center justify-center ${s.add ? 'bg-gray-100 border-2 border-dashed border-gray-300' : 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-0.5'}`}>
+              {s.add
+                ? <span className="text-base text-gray-400">+</span>
+                : <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center"><span className="text-[10px] text-gray-500 font-semibold">{s.name[0].toUpperCase()}</span></div>
+              }
+            </div>
+            <span className="text-[9px] text-gray-500 w-11 text-center truncate">{s.name}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Organic post (partial, creates context of a feed) */}
+      <div className="bg-white mb-1.5 border-b border-gray-100">
+        <div className="flex items-center px-3 py-2 gap-2">
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-300 to-blue-400 flex-shrink-0" />
+          <span className="text-xs font-semibold text-gray-900">jamie_travels</span>
+          <span className="ml-auto text-gray-400 text-lg leading-none">···</span>
+        </div>
+        <div className="h-28 bg-gradient-to-br from-sky-100 to-indigo-100 flex items-center justify-center">
+          <span className="text-3xl">🏖️✈️</span>
+        </div>
+        <div className="px-3 pt-2 pb-1 flex gap-3">
+          <span className="text-base">🤍</span>
+          <span className="text-base">💬</span>
+        </div>
+        <div className="px-3 pb-2">
+          <p className="text-xs text-gray-700"><span className="font-semibold">jamie_travels</span> Finally on vacation! 🌊✨</p>
+        </div>
+      </div>
+
+      {/* Sponsored ad */}
+      <div className="bg-white">
+        <div className="flex items-center px-3 py-2 gap-2">
+          <div className="w-8 h-8 rounded-full bg-[#4a235a] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">A</div>
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-semibold text-gray-900">Alex Rivera · Insurance Agent</div>
+            <div className="text-[10px] text-gray-400">Sponsored</div>
+          </div>
+          <span className="text-gray-400 text-lg leading-none">···</span>
+        </div>
+
+        <div className="bg-[#003087] px-5 py-6 text-center text-white">
+          <div className="text-3xl mb-3">📈💸</div>
+          <h3 className="text-base font-bold mb-2 leading-tight">
+            Did your auto &amp; home insurance go up AGAIN this year?
+          </h3>
+          <p className="text-blue-200 text-xs leading-relaxed">
+            Get a free quote from a local licensed agent in under 2 minutes. No spam. No data selling.
+          </p>
+        </div>
+
+        <button
+          onClick={onTap}
+          className="w-full py-3 bg-white hover:bg-blue-50 active:scale-[.98] transition-all border-t border-gray-100 text-[#003087] font-bold text-sm flex items-center justify-center gap-2"
+        >
+          Get My Free Quote
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <div className="px-3 py-2 flex gap-3 items-center">
+          <span className="text-base">🤍</span>
+          <span className="text-base">💬</span>
+          <p className="ml-auto text-[10px] text-gray-400 italic">Tap above to see how it works</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function QuotePreviewPage() {
   const [chatKey, setChatKey] = useState(0)
   const [flowDone, setFlowDone] = useState(false)
+  const [adClicked, setAdClicked] = useState(false)
 
   function restart() {
     setChatKey((k) => k + 1)
     setFlowDone(false)
+    setAdClicked(false)
   }
 
   return (
@@ -149,7 +247,7 @@ export default function QuotePreviewPage() {
           <span className="text-xs font-bold tracking-widest text-white uppercase flex-shrink-0">Live Demo</span>
           <span className="hidden sm:block text-blue-300 text-xs">·</span>
           <span className="hidden sm:block text-blue-200 text-xs truncate">
-            Click through the chat on the right — this is exactly what your clients experience.
+            Tap the ad in the demo to get started — this is exactly what your clients experience.
           </span>
         </div>
         <button
@@ -180,10 +278,6 @@ export default function QuotePreviewPage() {
 
           {/* Headline */}
           <div className="mb-8">
-            <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-3 py-1 mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#005EB8]" />
-              <span className="text-[#005EB8] text-xs font-semibold tracking-wide uppercase">Agent in the Loop</span>
-            </div>
             <h1 className="text-3xl xl:text-4xl font-bold text-[#003087] leading-tight mb-3">
               First to market.<br />
               <span className="text-[#005EB8]">Zero manual steps.</span>
@@ -286,11 +380,15 @@ export default function QuotePreviewPage() {
               <div className="h-8 bg-[#003087]" />
 
               <div className="h-[590px] overflow-hidden relative">
-                <InsuranceChat
-                  key={chatKey}
-                  agent={DEMO_AGENT}
-                  onComplete={() => setFlowDone(true)}
-                />
+                {!adClicked ? (
+                  <MockAdScreen onTap={() => setAdClicked(true)} />
+                ) : (
+                  <InsuranceChat
+                    key={chatKey}
+                    agent={DEMO_AGENT}
+                    onComplete={() => setFlowDone(true)}
+                  />
+                )}
 
                 {flowDone && (
                   <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 animate-fadeIn">

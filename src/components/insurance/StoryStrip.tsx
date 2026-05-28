@@ -181,7 +181,7 @@ const PANELS = [
     scene: <SceneTheAd />,
     step: '02',
     headline: 'Your ad stands out',
-    body: 'No spam. A real licensed agent. Unlike most insurance ads that sell data to multiple carriers, this connects to one agent only — and the prospect picks how they want to be contacted. They stay in control.',
+    body: 'Prospect notices your ad while scrolling through social media. They like that there is a local agent that can help them — and that they control the process.',
   },
   {
     scene: <SceneHandoff />,
