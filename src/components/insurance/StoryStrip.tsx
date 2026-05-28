@@ -7,50 +7,50 @@ function SceneSocialMedia() {
       {/* Background */}
       <rect width="160" height="200" fill="#F0F6FF"/>
 
-      {/* Woman - body */}
-      <rect x="52" y="108" width="56" height="52" rx="10" fill="#003087"/>
-      {/* Blazer lapels */}
-      <path d="M80 108 L68 120 L80 118 L92 120 Z" fill="#002070"/>
-      {/* Shirt */}
-      <rect x="74" y="108" width="12" height="14" fill="white"/>
+      {/* Person - neutral casual shirt */}
+      <rect x="54" y="110" width="52" height="50" rx="10" fill="#4A6FA5"/>
+      {/* Collar V */}
+      <path d="M80 110 L73 118 L80 116 L87 118 Z" fill="#3A5A8A"/>
 
       {/* Head */}
-      <ellipse cx="80" cy="84" rx="22" ry="24" fill="#F4C2A1"/>
-      {/* Hair */}
-      <ellipse cx="80" cy="68" rx="22" ry="14" fill="#2C1A0E"/>
-      <ellipse cx="58" cy="78" rx="6" ry="12" fill="#2C1A0E"/>
-      <ellipse cx="102" cy="78" rx="6" ry="12" fill="#2C1A0E"/>
-      {/* Face */}
-      <circle cx="73" cy="83" r="2.5" fill="#333"/>
-      <circle cx="87" cy="83" r="2.5" fill="#333"/>
-      <path d="M74 93 Q80 98 86 93" stroke="#C47A5A" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-      {/* Raised eyebrow (frustrated) */}
-      <path d="M70 77 Q73 74 76 76" stroke="#2C1A0E" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-      <path d="M84 76 Q87 74 90 77" stroke="#2C1A0E" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      <ellipse cx="80" cy="86" rx="20" ry="22" fill="#E8B89A"/>
+      {/* Short hair — cap shape only, no side locks */}
+      <ellipse cx="80" cy="68" rx="20" ry="13" fill="#2C1A0E"/>
+      <rect x="60" y="68" width="40" height="10" fill="#2C1A0E"/>
+
+      {/* Face — stressed: furrowed brows + frown */}
+      <circle cx="73" cy="86" r="2.5" fill="#333"/>
+      <circle cx="87" cy="86" r="2.5" fill="#333"/>
+      <path d="M74 96 Q80 92 86 96" stroke="#C47A5A" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      <path d="M69 79 Q73 75 77 78" stroke="#2C1A0E" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <path d="M83 78 Q87 75 91 79" stroke="#2C1A0E" strokeWidth="2" fill="none" strokeLinecap="round"/>
 
       {/* Arms */}
-      <rect x="30" y="112" width="24" height="10" rx="5" fill="#F4C2A1"/>
-      <rect x="106" y="112" width="24" height="10" rx="5" fill="#F4C2A1"/>
+      <rect x="32" y="114" width="24" height="10" rx="5" fill="#E8B89A"/>
+      <rect x="104" y="114" width="24" height="10" rx="5" fill="#E8B89A"/>
 
       {/* Phone in hand */}
-      <rect x="24" y="100" width="28" height="46" rx="5" fill="#1A2B4A"/>
-      <rect x="27" y="104" width="22" height="38" rx="3" fill="white"/>
-      {/* Social feed on phone */}
-      <rect x="29" y="107" width="18" height="5" rx="1" fill="#E8F0FE"/>
-      <rect x="29" y="114" width="18" height="5" rx="1" fill="#E8F0FE"/>
-      <rect x="29" y="121" width="18" height="5" rx="1" fill="#E8F0FE"/>
-      <rect x="29" y="128" width="14" height="5" rx="1" fill="#E8F0FE"/>
+      <rect x="24" y="102" width="28" height="46" rx="5" fill="#1A2B4A"/>
+      <rect x="27" y="106" width="22" height="38" rx="3" fill="white"/>
+      <rect x="29" y="109" width="18" height="5" rx="1" fill="#E8F0FE"/>
+      <rect x="29" y="116" width="18" height="5" rx="1" fill="#E8F0FE"/>
+      <rect x="29" y="123" width="18" height="5" rx="1" fill="#E8F0FE"/>
+      <rect x="29" y="130" width="14" height="5" rx="1" fill="#E8F0FE"/>
 
-      {/* Notification badge */}
-      <rect x="14" y="92" width="66" height="22" rx="6" fill="#DC2626"/>
-      <text x="47" y="100" textAnchor="middle" fontSize="6" fill="white" fontWeight="bold">⚠️ INSURANCE NOTICE</text>
-      <text x="47" y="109" textAnchor="middle" fontSize="5.5" fill="white">Your premium is going up</text>
+      {/* Notification 1 — premium increase */}
+      <rect x="8" y="44" width="74" height="22" rx="6" fill="#DC2626"/>
+      <text x="45" y="53" textAnchor="middle" fontSize="5.8" fill="white" fontWeight="bold">⚠️ PREMIUM UP +18%</text>
+      <text x="45" y="61" textAnchor="middle" fontSize="5" fill="white">Your renewal rate increased</text>
+      <path d="M32 66 L28 72 L36 66" fill="#DC2626"/>
 
-      {/* Notification tail */}
-      <path d="M38 114 L34 120 L42 114" fill="#DC2626"/>
+      {/* Notification 2 — non-renewal */}
+      <rect x="12" y="74" width="70" height="22" rx="6" fill="#B45309"/>
+      <text x="47" y="83" textAnchor="middle" fontSize="5.5" fill="white" fontWeight="bold">📧 NON-RENEWAL NOTICE</text>
+      <text x="47" y="91" textAnchor="middle" fontSize="5" fill="white">Coverage ends in 60 days</text>
+      <path d="M34 96 L30 102 L38 96" fill="#B45309"/>
 
-      {/* Frustration stars */}
-      <text x="108" y="80" fontSize="14" opacity="0.7">😤</text>
+      {/* Frustration */}
+      <text x="108" y="82" fontSize="14" opacity="0.8">😠</text>
     </svg>
   )
 }
@@ -175,13 +175,13 @@ const PANELS = [
     scene: <SceneSocialMedia />,
     step: '01',
     headline: 'The frustration',
-    body: "She's scrolling Instagram when another premium increase hits her inbox. Sound familiar?",
+    body: "Premium increases. Carrier non-renewals. Your next client needs coverage and doesn't know where to turn.",
   },
   {
     scene: <SceneTheAd />,
     step: '02',
     headline: 'Your ad stands out',
-    body: 'No spam promised. A real licensed agent. Smart tech that does the work. She taps.',
+    body: 'No spam. A real licensed agent. Unlike most insurance ads that sell data to multiple carriers, this connects to one agent only — and the prospect picks how they want to be contacted. They stay in control.',
   },
   {
     scene: <SceneHandoff />,

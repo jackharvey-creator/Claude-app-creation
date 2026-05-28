@@ -14,6 +14,7 @@ import {
 } from '@/lib/insurance/chatFlow'
 import { AgentHeader } from './AgentHeader'
 import { ChatMessage, TypingIndicator } from './ChatMessage'
+import { CoverageSelector } from './CoverageSelector'
 import { DecPageUpload } from './DecPageUpload'
 
 let msgCounter = 0
@@ -27,6 +28,7 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
   const [inputDisabled, setInputDisabled] = useState(true)
   const [textInput, setTextInput] = useState('')
   const [activeInputType, setActiveInputType] = useState<'text' | 'phone' | 'email' | 'none'>('none')
+  const [showCoverageSelector, setShowCoverageSelector] = useState(false)
   const [showDocUpload, setShowDocUpload] = useState(false)
   const [leadSubmitted, setLeadSubmitted] = useState(false)
   const [selectedMessages, setSelectedMessages] = useState<Set<string>>(new Set())
@@ -59,7 +61,12 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
         if (i < newMsgs.length - 1) await new Promise((r) => setTimeout(r, 350))
       }
 
-      if (s === 'upload_dec_page') {
+      if (s === 'ask_coverage') {
+        await new Promise((r) => setTimeout(r, 200))
+        setShowCoverageSelector(true)
+        setInputDisabled(true)
+        setActiveInputType('none')
+      } else if (s === 'upload_dec_page') {
         await new Promise((r) => setTimeout(r, 200))
         setShowDocUpload(true)
         setInputDisabled(true)
@@ -118,9 +125,6 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
 
     let updatedLead = { ...lead }
     switch (msgStepKey) {
-      case 'ask_coverage':
-        updatedLead = { ...updatedLead, coverageType: value as CoverageType }
-        break
       case 'ask_insured':
         updatedLead = { ...updatedLead, currentlyInsured: value === 'yes' }
         break
@@ -135,6 +139,16 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
     setLead(updatedLead)
     setInputDisabled(true)
     advanceFlow(msgStepKey, updatedLead)
+  }
+
+  function handleCoverageSubmit(values: CoverageType[], labels: string[]) {
+    setShowCoverageSelector(false)
+    const displayLabel = labels.join(' + ')
+    setMessages((prev) => [...prev, { id: uid(), role: 'user', content: displayLabel, type: 'text' }])
+    const updatedLead = { ...lead, coverageTypes: values }
+    setLead(updatedLead)
+    setInputDisabled(true)
+    advanceFlow('ask_coverage', updatedLead)
   }
 
   function handleTextSubmit() {
@@ -253,6 +267,9 @@ export function InsuranceChat({ agent, onComplete }: { agent: Agent; onComplete?
           />
         ))}
         {isTyping && <TypingIndicator />}
+        {showCoverageSelector && (
+          <CoverageSelector onSubmit={handleCoverageSubmit} />
+        )}
         {showDocUpload && (
           <DecPageUpload
             agentFirstName={agent.firstName}

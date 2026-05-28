@@ -12,7 +12,16 @@ export type FlowStep =
   | 'canopy_connect'
   | 'confirmed'
 
-export type CoverageType = 'auto' | 'home' | 'both'
+export type CoverageType =
+  | 'auto'
+  | 'home'
+  | 'secondary_property'
+  | 'renters'
+  | 'flood'
+  | 'earthquake'
+  | 'umbrella'
+  | 'jewelry'
+  | 'toys'
 export type ContactPref = 'call' | 'text' | 'email'
 export type DocPreference = 'upload' | 'canopy_connect'
 
@@ -21,7 +30,7 @@ export interface LeadData {
   lastName?: string
   fullName?: string
   zipCode?: string
-  coverageType?: CoverageType
+  coverageTypes?: CoverageType[]
   currentlyInsured?: boolean
   contactPreference?: ContactPref
   contactValue?: string
@@ -100,13 +109,8 @@ export function getBotMessages(
       return {
         messages: [{
           role: 'bot',
-          content: 'What type of coverage are you shopping for?',
+          content: 'What type of coverage are you shopping for? Select all that apply.',
           type: 'text',
-          options: [
-            { label: '🚗  Auto', value: 'auto' },
-            { label: '🏠  Home', value: 'home' },
-            { label: '🚗🏠  Auto + Home', value: 'both' },
-          ],
           stepKey: 'ask_coverage',
         }],
         inputType: 'none',
