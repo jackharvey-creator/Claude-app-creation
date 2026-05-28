@@ -264,7 +264,7 @@ export default function QuotePreviewPage() {
       <div className="flex flex-col xl:flex-row min-h-[calc(100vh-45px)]">
 
         {/* ── Left: Story panel ──────────────────────────────────────────────── */}
-        <div className="xl:w-[480px] flex-shrink-0 border-b xl:border-b-0 xl:border-r border-blue-100 bg-white px-6 py-10 xl:py-14 overflow-y-auto">
+        <div className="xl:w-[480px] flex-shrink-0 border-b xl:border-b-0 xl:border-r border-blue-100 bg-white px-6 pt-10 pb-4 xl:py-14 overflow-y-auto">
 
           {/* Logo */}
           <div className="flex items-center gap-2.5 mb-10">
@@ -333,12 +333,12 @@ export default function QuotePreviewPage() {
           </div>
 
           {/* Story strip */}
-          <div className="mb-10">
+          <div className="mb-0">
             <StoryStrip />
           </div>
 
           {/* Lead card — appears after demo completes */}
-          <div className={`transition-all duration-500 ${flowDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+          <div className={flowDone ? 'mt-8' : 'hidden'}>
             <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-4">
               What lands in your agent&apos;s Salesforce queue
             </p>
@@ -346,7 +346,7 @@ export default function QuotePreviewPage() {
           </div>
 
           {/* CTA */}
-          <div className={`mt-8 pt-8 border-t border-blue-100 transition-opacity duration-500 ${flowDone ? 'opacity-100' : 'opacity-60'}`}>
+          <div className={`hidden xl:block mt-8 pt-8 border-t border-blue-100 transition-opacity duration-500 ${flowDone ? 'opacity-100' : 'opacity-60'}`}>
             {!flowDone && (
               <p className="text-xs text-gray-400 mb-3">
                 Complete the demo chat to see what your agents receive in Salesforce →
@@ -368,7 +368,7 @@ export default function QuotePreviewPage() {
         </div>
 
         {/* ── Right: Live demo ───────────────────────────────────────────────── */}
-        <div className="flex-1 flex flex-col items-center justify-start xl:justify-center bg-[#F0F6FF] px-4 py-8 xl:py-12">
+        <div className="flex-1 flex flex-col items-center justify-start xl:justify-center bg-[#F0F6FF] px-4 pt-4 pb-8 xl:py-12">
           <div className="w-full max-w-sm">
 
             {/* Phone frame */}
