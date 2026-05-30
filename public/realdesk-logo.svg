@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" width="520" height="160">
+  <defs>
+    <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F0F4F8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E2EAF4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="teal5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5E9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2DD4BF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="tealSubtle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5E9;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#2DD4BF;stop-opacity:0.1" />
+    </linearGradient>
+    <filter id="glow5">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#94A3B8" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="520" height="160" rx="12" fill="url(#bg5)" filter="url(#softShadow)"/>
+
+  <!-- Subtle border -->
+  <rect width="520" height="160" rx="12" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="4" height="160" rx="2" fill="url(#teal5)" opacity="0.9"/>
+
+  <!-- Left node: AI chip square -->
+  <rect x="22" y="62" width="28" height="28" rx="5" fill="url(#tealSubtle)" stroke="url(#teal5)" stroke-width="1.6"/>
+  <!-- Chip pins top and bottom -->
+  <line x1="29" y1="62" x2="29" y2="57" stroke="#0EA5E9" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="36" y1="62" x2="36" y2="57" stroke="#0EA5E9" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="43" y1="62" x2="43" y2="57" stroke="#0EA5E9" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="29" y1="90" x2="29" y2="95" stroke="#0EA5E9" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="36" y1="90" x2="36" y2="95" stroke="#0EA5E9" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="43" y1="90" x2="43" y2="95" stroke="#0EA5E9" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  <!-- AI label -->
+  <text x="36" y="80" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8" font-weight="700" letter-spacing="0.5" fill="#0EA5E9" text-anchor="middle">AI</text>
+
+  <!-- Right node: Human circle -->
+  <circle cx="110" cy="76" r="14" fill="url(#tealSubtle)" stroke="url(#teal5)" stroke-width="1.6"/>
+  <circle cx="110" cy="71" r="4.5" fill="none" stroke="#2DD4BF" stroke-width="1.4"/>
+  <path d="M103 82 Q110 79 117 82" fill="none" stroke="#2DD4BF" stroke-width="1.4" stroke-linecap="round"/>
+
+  <!-- Bridge arc connecting AI chip to human node -->
+  <path d="M50 76 Q72 50 96 76" fill="none" stroke="url(#teal5)" stroke-width="2" stroke-linecap="round" filter="url(#glow5)"/>
+
+  <!-- Nodes on bridge arc -->
+  <circle cx="73" cy="57" r="3" fill="#0EA5E9" opacity="0.9" filter="url(#glow5)"/>
+  <circle cx="60" cy="65" r="2" fill="#2DD4BF" opacity="0.6"/>
+  <circle cx="87" cy="65" r="2" fill="#2DD4BF" opacity="0.6"/>
+
+  <!-- REAL - bold slate -->
+  <text x="145" y="90" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="52" font-weight="800" letter-spacing="-1.5" fill="#334155">REAL</text>
+
+  <!-- Teal underline beneath REAL -->
+  <rect x="145" y="95" width="124" height="3" rx="1.5" fill="url(#teal5)" opacity="0.85"/>
+
+  <!-- DESK - light weight, lighter slate -->
+  <text x="277" y="90" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="52" font-weight="200" letter-spacing="5" fill="#64748B">DESK</text>
+
+  <!-- Tagline -->
+  <text x="145" y="120" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10" font-weight="400" letter-spacing="2.2" fill="#0EA5E9" opacity="0.75">AI GETS YOU STARTED. YOUR AGENT GETS IT DONE.</text>
+</svg>

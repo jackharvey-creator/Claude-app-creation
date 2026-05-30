@@ -62,7 +62,7 @@ export function getBotMessages(
       return {
         messages: [{
           role: 'bot',
-          content: `Hey there! I'm ${agentFirstName}'s digital assistant. ${agentFirstName} is a licensed insurance agent who personally handles every quote — no lead farms, no spam, just real coverage from someone who actually cares about your situation.`,
+          content: `Hey there! I'm ${agentFirstName}'s Real Desk assistant. ${agentFirstName} is a licensed insurance agent who personally handles every quote — no lead farms, no spam, just real coverage from someone who actually cares about your situation.`,
           type: 'text',
           stepKey: 'greeting',
         }],

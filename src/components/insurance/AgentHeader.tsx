@@ -3,6 +3,11 @@ import type { Agent } from '@/lib/insurance/agents'
 
 export function AgentHeader({ agent }: { agent: Agent }) {
   return (
+    <div className="flex flex-col">
+    <div className="flex items-center justify-between px-4 py-1.5 bg-gradient-to-r from-[#0EA5E9] to-[#2DD4BF]">
+      <span className="text-white text-[10px] font-bold tracking-widest uppercase">Real Desk</span>
+      <span className="text-white/70 text-[9px] tracking-wider uppercase">AI + Agent</span>
+    </div>
     <div className="flex items-center gap-3 px-4 py-3 border-b border-blue-100 bg-white shadow-sm">
       {/* Avatar */}
       <div
@@ -25,6 +30,7 @@ export function AgentHeader({ agent }: { agent: Agent }) {
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
         <span className="text-emerald-600 text-xs font-medium">Available</span>
       </div>
+    </div>
     </div>
   )
 }
