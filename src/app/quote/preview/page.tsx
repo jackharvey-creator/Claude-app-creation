@@ -60,6 +60,40 @@ const PIPELINE_STEPS = [
   },
 ]
 
+function RealDeskLogo() {
+  return (
+    <div className="flex items-start gap-3.5">
+      <svg width="52" height="42" viewBox="0 0 130 106" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="rdG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#0EA5E9" />
+            <stop offset="100%" stopColor="#2DD4BF" />
+          </linearGradient>
+        </defs>
+        <rect x="2" y="30" width="30" height="30" rx="5" fill="rgba(14,165,233,0.08)" stroke="url(#rdG)" strokeWidth="1.6"/>
+        <text x="17" y="49" textAnchor="middle" fontSize="9" fontWeight="700" fill="#0EA5E9" letterSpacing="0.5">AI</text>
+        <path d="M32 45 Q60 18 88 45" fill="none" stroke="url(#rdG)" strokeWidth="2.2" strokeLinecap="round"/>
+        <circle cx="60" cy="22" r="3" fill="#0EA5E9" opacity="0.9"/>
+        <circle cx="46" cy="33" r="1.8" fill="#2DD4BF" opacity="0.6"/>
+        <circle cx="74" cy="33" r="1.8" fill="#2DD4BF" opacity="0.6"/>
+        <circle cx="108" cy="45" r="16" fill="rgba(14,165,233,0.08)" stroke="url(#rdG)" strokeWidth="1.6"/>
+        <circle cx="108" cy="39" r="5" fill="none" stroke="#2DD4BF" strokeWidth="1.4"/>
+        <path d="M100 52 Q108 49 116 52" fill="none" stroke="#2DD4BF" strokeWidth="1.4" strokeLinecap="round"/>
+      </svg>
+      <div>
+        <div className="flex items-baseline">
+          <span className="text-[30px] font-extrabold tracking-tight text-[#334155] leading-none">REAL</span>
+          <span className="text-[30px] font-thin tracking-[5px] text-[#64748B] leading-none">&nbsp;DESK</span>
+        </div>
+        <div className="h-[3px] w-[104px] bg-gradient-to-r from-[#0EA5E9] to-[#2DD4BF] rounded-full mt-1" />
+        <p className="text-[#0EA5E9] text-[7.5px] tracking-[1.8px] mt-2 opacity-80 uppercase">
+          AI gets you started. Your agent gets it done.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function AgentLeadCard() {
   return (
     <div className="rounded-2xl border border-blue-100 bg-white overflow-hidden shadow-md">
@@ -268,8 +302,7 @@ export default function QuotePreviewPage() {
 
           {/* Logo */}
           <div className="mb-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/realdesk-logo.svg" alt="Real Desk" className="h-16 w-auto" />
+            <RealDeskLogo />
           </div>
 
           {/* Headline */}
