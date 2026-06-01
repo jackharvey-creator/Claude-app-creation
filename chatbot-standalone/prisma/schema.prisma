@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CandidateAssessment {
+  id               String           @id @default(cuid())
+  firstName        String
+  lastName         String
+  email            String
+  phone            String?
+  city             String?
+  state            String?
+  zipCode          String?
+  latitude         Float?
+  longitude        Float?
+  nearestJobId     String?
+  nearestJobTitle  String?
+  nearestJobUrl    String?
+  nearestOffice    String?
+  distanceMiles    Float?
+  linkedInUrl      String?
+  linkedInData     Json?
+  resumeFileName   String?
+  resumeText       String?
+  answers          Json
+  rawScore         Int
+  maxScore         Int
+  percentScore     Float
+  passed           Boolean
+  aiSummary        String?
+  aiStrengths      String[]
+  aiConcerns       String[]
+  aiRecommendation String?
+  status           AssessmentStatus @default(PENDING)
+  inviteSentAt     DateTime?
+  managerNotifiedAt DateTime?
+  campaignSource   String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum AssessmentStatus {
+  PENDING
+  EVALUATED
+  PASSED
+  FAILED
+  INVITED
+  HIRED
+  REJECTED
+}
