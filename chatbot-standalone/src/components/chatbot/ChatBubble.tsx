@@ -22,9 +22,9 @@ export function ChatBubble() {
         <div className="fixed inset-0 z-50 flex items-end justify-end p-4 sm:p-6 pointer-events-none">
           <div className="pointer-events-auto w-full max-w-[430px] h-[88vh] max-h-[700px] flex flex-col rounded-2xl shadow-2xl overflow-hidden animate-slideUp">
             {/* Modal header */}
-            <div className="flex items-center justify-between px-5 py-3.5 shrink-0" style={{ background: '#1B3A6B' }}>
+            <div className="flex items-center justify-between px-5 py-3.5 shrink-0" style={{ background: '#005BAC' }}>
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm text-white" style={{ background: '#F4831F' }}>C</div>
+                <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm text-white" style={{ background: '#005BAC' }}>C</div>
                 <div>
                   <p className="text-white font-semibold text-sm leading-tight">Comparion Career Assessment</p>
                   <div className="flex items-center gap-1.5 mt-0.5">
@@ -61,7 +61,7 @@ export function ChatBubble() {
             <button
               onClick={open}
               className="mt-3 w-full py-2.5 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-              style={{ background: '#1B3A6B' }}
+              style={{ background: '#005BAC' }}
             >
               Start My Free Assessment →
             </button>
@@ -75,7 +75,7 @@ export function ChatBubble() {
       <button
         onClick={isOpen ? close : open}
         className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 animate-bounceIn"
-        style={{ background: isOpen ? '#374151' : '#F4831F' }}
+        style={{ background: isOpen ? '#003A7A' : '#005BAC' }}
         aria-label="Career Assessment"
       >
         {isOpen ? (

@@ -5,16 +5,16 @@ export default function DemoPage() {
     <div className="min-h-screen bg-white font-sans">
 
       {/* Demo banner */}
-      <div className="bg-amber-400 text-amber-900 text-center text-xs font-semibold py-2 px-4 tracking-wide">
-        RECRUITMENT CHATBOT DEMO — Click the orange bubble in the bottom-right corner to experience the candidate flow
+      <div className="text-white text-center text-xs font-semibold py-2 px-4 tracking-wide" style={{ background: '#003A7A' }}>
+        RECRUITMENT CHATBOT DEMO — Click the blue bubble in the bottom-right corner to experience the candidate flow
       </div>
 
       {/* Navigation */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-0 flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded" style={{ background: '#F4831F' }} />
-            <span className="text-xl font-bold tracking-tight" style={{ color: '#1B3A6B' }}>
+            <div className="w-8 h-8 rounded" style={{ background: '#0088E0' }} />
+            <span className="text-xl font-bold tracking-tight" style={{ color: '#005BAC' }}>
               Comparion<span className="font-light">Insurance</span>
             </span>
           </div>
@@ -24,15 +24,15 @@ export default function DemoPage() {
             <a href="#" className="hover:text-blue-900 transition-colors">Find an Agent</a>
             <a href="#" className="hover:text-blue-900 transition-colors">About Us</a>
           </nav>
-          <button className="hidden md:block px-5 py-2 rounded-lg text-white text-sm font-semibold transition-opacity hover:opacity-90" style={{ background: '#F4831F' }}>
+          <button className="hidden md:block px-5 py-2 rounded-lg text-white text-sm font-semibold transition-opacity hover:opacity-90" style={{ background: '#0088E0' }}>
             Get a Quote
           </button>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: '#1B3A6B' }}>
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #F4831F 0%, transparent 60%)' }} />
+      <section className="relative overflow-hidden" style={{ background: '#005BAC' }}>
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #0088E0 0%, transparent 60%)' }} />
         <div className="max-w-7xl mx-auto px-6 py-24 md:py-32 relative">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
@@ -41,13 +41,13 @@ export default function DemoPage() {
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
               Find the Right Coverage.<br />
-              <span style={{ color: '#F4831F' }}>Protect What Matters Most.</span>
+              <span className="text-white/80">Protect What Matters Most.</span>
             </h1>
             <p className="text-white/70 text-lg mb-8 leading-relaxed">
               Comparion's independent agents shop multiple carriers to find you the best rates on auto, home, life, and business insurance.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-3.5 rounded-xl text-white font-semibold text-base transition-opacity hover:opacity-90" style={{ background: '#F4831F' }}>
+              <button className="px-8 py-3.5 rounded-xl text-white font-semibold text-base transition-opacity hover:opacity-90" style={{ background: '#0088E0' }}>
                 Get a Free Quote
               </button>
               <button className="px-8 py-3.5 rounded-xl text-white font-semibold text-base border border-white/30 hover:bg-white/10 transition-colors">
@@ -68,7 +68,7 @@ export default function DemoPage() {
             { value: '30+', label: 'Carrier Partners' },
           ].map((s) => (
             <div key={s.label}>
-              <p className="text-3xl font-bold" style={{ color: '#1B3A6B' }}>{s.value}</p>
+              <p className="text-3xl font-bold" style={{ color: '#005BAC' }}>{s.value}</p>
               <p className="text-sm text-gray-500 mt-1">{s.label}</p>
             </div>
           ))}
@@ -77,7 +77,7 @@ export default function DemoPage() {
 
       {/* Products */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-bold text-center mb-3" style={{ color: '#1B3A6B' }}>Insurance Solutions</h2>
+        <h2 className="text-3xl font-bold text-center mb-3" style={{ color: '#005BAC' }}>Insurance Solutions</h2>
         <p className="text-gray-500 text-center mb-12 max-w-xl mx-auto">Our agents compare rates from top carriers so you get the right protection at the right price.</p>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {[
@@ -102,7 +102,7 @@ export default function DemoPage() {
       {/* Why Comparion */}
       <section className="py-16" style={{ background: '#F8F9FB' }}>
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#1B3A6B' }}>Why Choose Comparion?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#005BAC' }}>Why Choose Comparion?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { icon: '🤝', title: 'Independent Agents', body: 'We work for you, not the insurance company. Our agents compare multiple carriers to find your best rate.' },
@@ -111,7 +111,7 @@ export default function DemoPage() {
             ].map((w) => (
               <div key={w.title} className="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 text-center">
                 <span className="text-4xl mb-4 block">{w.icon}</span>
-                <h3 className="font-bold text-lg mb-2" style={{ color: '#1B3A6B' }}>{w.title}</h3>
+                <h3 className="font-bold text-lg mb-2" style={{ color: '#005BAC' }}>{w.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{w.body}</p>
               </div>
             ))}
@@ -121,7 +121,7 @@ export default function DemoPage() {
 
       {/* Careers teaser */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="rounded-2xl p-10 md:p-14 text-white flex flex-col md:flex-row items-center justify-between gap-8" style={{ background: '#1B3A6B' }}>
+        <div className="rounded-2xl p-10 md:p-14 text-white flex flex-col md:flex-row items-center justify-between gap-8" style={{ background: '#005BAC' }}>
           <div>
             <h2 className="text-3xl font-bold mb-3">Join Our Growing Team</h2>
             <p className="text-white/70 text-base leading-relaxed max-w-lg">
@@ -129,8 +129,8 @@ export default function DemoPage() {
             </p>
           </div>
           <button
-            className="shrink-0 px-8 py-4 rounded-xl font-bold text-base transition-opacity hover:opacity-90 whitespace-nowrap"
-            style={{ background: '#F4831F', color: '#fff' }}
+            className="shrink-0 px-8 py-4 rounded-xl font-bold text-base transition-colors hover:bg-gray-50 whitespace-nowrap border-2 border-white"
+            style={{ background: '#fff', color: '#005BAC' }}
           >
             Explore Careers
           </button>
