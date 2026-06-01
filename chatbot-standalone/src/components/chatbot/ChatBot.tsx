@@ -83,7 +83,7 @@ export function ChatBot({ campaignSource, previewMode = false }: { campaignSourc
               <div className="animate-fadeIn text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4"><svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
                 <h1 className="text-2xl font-bold text-gray-900 mb-3">Interested in a Career with Comparion?</h1>
-                <p className="text-gray-600 mb-2 text-sm leading-relaxed">Find out if you&apos;re a great fit for an Insurance Sales Agent role <strong>in as little as 3 minutes.</strong></p>
+                <p className="text-gray-600 mb-2 text-sm leading-relaxed">Find out if you&apos;re a great fit for an Insurance Sales Agent role <strong>in as little as 90 seconds.</strong></p>
                 <ul className="text-left text-sm text-gray-600 space-y-2 mb-6 bg-gray-50 rounded-xl p-4">
                   <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> 10 quick multiple-choice questions</li>
                   <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> Instant AI-powered match decision</li>
@@ -91,7 +91,7 @@ export function ChatBot({ campaignSource, previewMode = false }: { campaignSourc
                   <li className="flex items-center gap-2"><span className="text-blue-500">✓</span> Qualified candidates receive an immediate interview invitation</li>
                 </ul>
                 <button onClick={() => setStep({ type: 'contact' })} className="w-full py-3.5 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-colors text-base">Find Out If I&apos;m a Fit →</button>
-                <p className="mt-3 text-xs text-gray-400">Takes about 3 minutes · No account required</p>
+                <p className="mt-3 text-xs text-gray-400">Takes about 90 seconds · No account required</p>
                 <p className="mt-4 text-xs text-gray-400 border-t border-gray-100 pt-4 leading-relaxed"><strong className="text-gray-500">Disclaimer:</strong> This assessment is a matching tool only and does not constitute an offer of employment. Completing this assessment does not guarantee a job offer or interview. Qualifying responses will be matched with open positions that candidates may choose to apply for.</p>
               </div>
             )}

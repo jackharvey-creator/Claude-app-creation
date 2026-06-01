@@ -29,7 +29,7 @@ export function ChatBubble() {
                   <p className="text-white font-semibold text-sm leading-tight">Comparion Career Assessment</p>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
-                    <span className="text-white/60 text-xs">AI-Powered · 3 min</span>
+                    <span className="text-white/60 text-xs">AI-Powered · 90 sec</span>
                   </div>
                 </div>
               </div>
