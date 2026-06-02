@@ -72,10 +72,10 @@ export function ResultScreen({ passed, firstName, aiSummary, aiStrengths, aiConc
         </div>
         <h2 className="text-2xl font-bold text-gray-800">Thank you, {firstName}.</h2>
         <p className="mt-3 text-gray-600 text-sm leading-relaxed">
-          We appreciate you taking the time to complete our career assessment. After reviewing your responses, we are not able to move forward with your application at this time.
+          We appreciate you taking the time to complete our career assessment. Based on your responses, this particular role may not be the best fit for you right now.
         </p>
         <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-          This does not reflect on your overall abilities or potential — it simply means this particular role and timing may not be the right match.
+          That doesn't mean there isn't a place for you at Comparion — we encourage you to explore the other opportunities we have available.
         </p>
       </div>
 
