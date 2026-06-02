@@ -65,30 +65,52 @@ export function ResultScreen({ passed, firstName, aiSummary, aiStrengths, aiConc
 
   return (
     <div className="animate-fadeIn space-y-5">
-      <div className="rounded-2xl p-6 text-center bg-amber-50 border-2 border-amber-200">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 mb-4"><svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-        <h2 className="text-2xl font-bold text-amber-800">Thanks for applying, {firstName}!</h2>
-        <p className="mt-2 text-amber-700">Based on your responses, this role may not be the best fit right now.</p>
-        <p className="mt-1 text-sm text-amber-600">We encourage you to check back as requirements evolve.</p>
+      {/* Honest, respectful result */}
+      <div className="rounded-2xl p-7 text-center bg-gray-50 border-2 border-gray-200">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+          <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-800">Thank you, {firstName}.</h2>
+        <p className="mt-3 text-gray-600 text-sm leading-relaxed">
+          We appreciate you taking the time to complete our career assessment. After reviewing your responses, we are not able to move forward with your application at this time.
+        </p>
+        <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+          This does not reflect on your overall abilities or potential — it simply means this particular role and timing may not be the right match.
+        </p>
       </div>
-      {aiSummary && <div className="bg-white border border-gray-200 rounded-xl p-5"><h3 className="font-semibold text-gray-800 mb-2">AI Profile Summary</h3><p className="text-sm text-gray-600">{aiSummary}</p></div>}
-      {((aiStrengths && aiStrengths.length > 0) || (aiConcerns && aiConcerns.length > 0)) && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {aiStrengths && aiStrengths.length > 0 && <div className="bg-green-50 border border-green-100 rounded-xl p-4"><h4 className="text-sm font-semibold text-green-800 mb-2">Strengths</h4><ul className="space-y-1">{aiStrengths.map((s, i) => <li key={i} className="text-sm text-green-700 flex items-start gap-2"><span className="mt-0.5 text-green-500">✓</span> {s}</li>)}</ul></div>}
-          {aiConcerns && aiConcerns.length > 0 && <div className="bg-amber-50 border border-amber-100 rounded-xl p-4"><h4 className="text-sm font-semibold text-amber-800 mb-2">Areas to Develop</h4><ul className="space-y-1">{aiConcerns.map((c, i) => <li key={i} className="text-sm text-amber-700 flex items-start gap-2"><span className="mt-0.5 text-amber-500">○</span> {c}</li>)}</ul></div>}
+
+      {/* Encouraging next steps */}
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+        <h3 className="font-semibold text-gray-800">What's next</h3>
+        <div className="space-y-2 text-sm text-gray-600">
+          <div className="flex items-start gap-2">
+            <span className="text-blue-500 mt-0.5 shrink-0">→</span>
+            <span>Your results have been received. A member of our team may still reach out if a different opportunity becomes available.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="text-blue-500 mt-0.5 shrink-0">→</span>
+            <span>You're welcome to retake the assessment in 90 days if your situation or experience has changed.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="text-blue-500 mt-0.5 shrink-0">→</span>
+            <span>If you'd still like to explore opportunities, you can view our full careers page below.</span>
+          </div>
         </div>
-      )}
-      {nearestJob && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
-          <h3 className="font-semibold text-blue-900 mb-1">Nearest Open Position</h3>
-          <p className="text-blue-800 font-medium">{nearestJob.title}</p>
-          <p className="text-sm text-blue-600">{nearestJob.office} — {nearestJob.city}, {nearestJob.state}</p>
-          {nearestJob.distanceMiles > 0 && <p className="text-xs text-blue-500 mt-1">~{nearestJob.distanceMiles} miles from your location</p>}
-          <a href={nearestJob.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:text-blue-900 underline underline-offset-2">View Full Job Posting →</a>
-        </div>
-      )}
-      <p className="text-center text-xs text-gray-400">Your results have been shared with our recruiting team. We&apos;ll be in touch soon.</p>
-      <p className="text-xs text-gray-400 border-t border-gray-100 pt-4 leading-relaxed"><strong className="text-gray-500">Disclaimer:</strong> This assessment is a matching tool only and does not constitute an offer of employment. Completing this assessment does not guarantee a job offer or interview. Qualifying responses are matched with open positions that candidates may choose to apply for.</p>
+      </div>
+
+      {/* Careers link */}
+      <a
+        href="https://www.comparioninsurance.com/careers"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block w-full text-center py-3.5 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-colors text-sm"
+      >
+        View Comparion Careers Page →
+      </a>
+
+      <p className="text-xs text-gray-400 border-t border-gray-100 pt-4 leading-relaxed">
+        <strong className="text-gray-500">Disclaimer:</strong> This assessment is a matching tool only and does not constitute a formal hiring decision. Results are based solely on your responses to this screening questionnaire.
+      </p>
     </div>
   )
 }
